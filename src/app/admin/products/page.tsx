@@ -427,6 +427,7 @@ export default function AdminProductsPage() {
                 price: '',
                 comparePrice: '',
                 stock: '',
+                lowStockAlert: '',
                 category: '',
                 department: '',
                 status: 'active',
@@ -639,7 +640,7 @@ export default function AdminProductsPage() {
                         name="status" 
                         value="active" 
                         checked={newProduct.status === 'active'}
-                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value})}
+                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value as "active" | "draft" | "archived"})}
                       />
                       <label htmlFor="active" className="text-sm">Active</label>
                     </div>
@@ -650,7 +651,7 @@ export default function AdminProductsPage() {
                         name="status" 
                         value="draft"
                         checked={newProduct.status === 'draft'}
-                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value})}
+                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value as "active" | "draft" | "archived"})}
                       />
                       <label htmlFor="draft" className="text-sm">Draft</label>
                     </div>
@@ -661,7 +662,7 @@ export default function AdminProductsPage() {
                         name="status" 
                         value="archived"
                         checked={newProduct.status === 'archived'}
-                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value})}
+                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value as "active" | "draft" | "archived"})}
                       />
                       <label htmlFor="archived" className="text-sm">Archived</label>
                     </div>
@@ -869,7 +870,7 @@ export default function AdminProductsPage() {
                         name="edit-status" 
                         value="active" 
                         checked={newProduct.status === 'active'}
-                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value})}
+                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value as "active" | "draft" | "archived"})}
                       />
                       <label htmlFor="edit-active" className="text-sm">Active</label>
                     </div>
@@ -880,7 +881,7 @@ export default function AdminProductsPage() {
                         name="edit-status" 
                         value="draft"
                         checked={newProduct.status === 'draft'}
-                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value})}
+                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value as "active" | "draft" | "archived"})}
                       />
                       <label htmlFor="edit-draft" className="text-sm">Draft</label>
                     </div>
@@ -891,7 +892,7 @@ export default function AdminProductsPage() {
                         name="edit-status" 
                         value="archived"
                         checked={newProduct.status === 'archived'}
-                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value})}
+                        onChange={(e) => setNewProduct({...newProduct, status: e.target.value as "active" | "draft" | "archived"})}
                       />
                       <label htmlFor="edit-archived" className="text-sm">Archived</label>
                     </div>

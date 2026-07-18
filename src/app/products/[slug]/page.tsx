@@ -481,7 +481,7 @@ export default function ProductPage() {
                   {product.attributes && Object.entries(product.attributes).map(([key, value]) => (
                     <div key={key} className="flex justify-between py-2 border-b last:border-0">
                       <span className="text-muted-foreground">{key}</span>
-                      <span className="font-medium text-right">{value}</span>
+                      <span className="font-medium text-right">{String(value)}</span>
                     </div>
                   ))}
                 </div>
