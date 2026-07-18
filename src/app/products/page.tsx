@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { ProductCard } from "@/components/shop/product-card"
 import { Button } from "@/components/ui/button"
@@ -50,7 +50,7 @@ const sortOptions = [
   { value: "newest", label: "Newest" },
 ]
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const { t } = useTranslation()
   const [adminProducts, setAdminProducts] = useState<AdminProduct[]>([])
   const [searchQuery, setSearchQuery] = useState("")
@@ -429,5 +429,13 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]">Loading products...</div>}>
+      <ProductsPageContent />
+    </Suspense>
   )
 }
