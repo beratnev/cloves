@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI Shop - AI-Powered E-Commerce Platform
 
 A modern, production-ready e-commerce platform with integrated AI Shopping Assistant that helps users find products using natural language.
@@ -215,3 +216,6 @@ MIT
 ## Support
 
 For support, email support@ai-shop.beratnev.com or open an issue on GitHub.
+=======
+# cloves
+>>>>>>> 303353e3c135eaa18b1d53706ed86f80b9b7517d
