@@ -1,0 +1,422 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum Gender {
+  MEN
+  WOMEN
+  KIDS
+  UNISEX
+}
+
+enum SkinType {
+  NORMAL
+  DRY
+  OILY
+  COMBINATION
+  SENSITIVE
+  ALL_SKIN_TYPES
+}
+
+enum FragranceFamily {
+  FLORAL
+  WOODY
+  FRESH
+  ORIENTAL
+  FRUITY
+  CITRUS
+}
+
+enum ProductType {
+  SKINCARE
+  BODYCARE
+  HAIRCARE
+  FRAGRANCE
+  HOME
+  GIFT
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          UserRole  @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  orders        Order[]
+  reviews       Review[]
+  wishlist      Wishlist[]
+  addresses     Address[]
+  recentlyViewed RecentlyViewed[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  image       String?
+  gender      Gender?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+
+
+  @@map("categories")
+}
+
+model Brand {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  logo        String?
+  description String?   @db.Text
+  website     String?
+  featured    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  products Product[]
+
+  @@map("brands")
+}
+
+model Color {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  hexCode     String?
+  createdAt   DateTime  @default(now())
+
+  products ProductColor[]
+
+  @@map("colors")
+}
+
+model Size {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  category    String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  products ProductSize[]
+
+  @@map("sizes")
+}
+
+model Material {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+
+  products ProductMaterial[]
+
+  @@map("materials")
+}
+
+model ProductColor {
+  productId String
+  colorId   String
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  color   Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
+
+  @@id([productId, colorId])
+  @@map("product_colors")
+}
+
+model ProductSize {
+  productId String
+  sizeId    String
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size    Size    @relation(fields: [sizeId], references: [id], onDelete: Cascade)
+
+  @@id([productId, sizeId])
+  @@map("product_sizes")
+}
+
+model ProductMaterial {
+  productId  String
+  materialId String
+
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@id([productId, materialId])
+  @@map("product_materials")
+}
+
+model ProductImage {
+  id         String   @id @default(cuid())
+  productId  String
+  publicId   String   @unique
+  secureUrl  String
+  width      Int
+  height     Int
+  format     String
+  bytes      Int
+  isPrimary  Boolean  @default(false)
+  position   Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_images")
+}
+
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String    @db.Text
+  price       Float
+  discountPrice Float?
+  stock       Int       @default(0)
+  department  String    @default("NEW")
+  category    String
+  attributes  Json?
+  aiAdvice    Json?
+  brandId     String?
+  tags        String[]
+  featured    Boolean   @default(false)
+  status      String    @default("active")
+  seoTitle    String?
+  seoDescription String? @db.Text
+  gender      Gender    @default(UNISEX)
+  skinType    SkinType?
+  fragranceFamily FragranceFamily?
+  productType ProductType?
+  ingredients String? @db.Text
+  howToUse    String? @db.Text
+  weight      Float?
+  dimensions  String?
+  sku         String?   @unique
+  barcode     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+
+  brand       Brand?        @relation(fields: [brandId], references: [id])
+  colors      ProductColor[]
+  sizes       ProductSize[]
+  materials   ProductMaterial[]
+  images      ProductImage[]
+  orderItems  OrderItem[]
+  reviews     Review[]
+  wishlist    Wishlist[]
+  recentlyViewed RecentlyViewed[]
+
+  @@map("products")
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  userId        String
+  status        OrderStatus @default(PENDING)
+  total         Float
+  subtotal      Float
+  tax           Float
+  shipping      Float
+  addressId     String?
+  notes         String?     @db.Text
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  user          User        @relation(fields: [userId], references: [id])
+  address       Address?    @relation(fields: [addressId], references: [id])
+  items         OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  sizeId    String?
+  colorId   String?
+
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model Address {
+  id          String   @id @default(cuid())
+  userId      String
+  fullName    String
+  addressLine String
+  city        String
+  state       String
+  postalCode  String
+  country     String
+  phone       String?
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders      Order[]
+
+  @@map("addresses")
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  userId      String
+  productId   String
+  rating      Int
+  title       String?
+  comment     String   @db.Text
+  images      String[]
+  verified    Boolean  @default(false)
+  helpful     Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("wishlist")
+}
+
+model Coupon {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  discount    Float
+  type        String   @default("percentage")
+  minPurchase Float?
+  maxDiscount Float?
+  expiresAt   DateTime?
+  usageLimit  Int?
+  usedCount   Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("coupons")
+}
+
+model RecentlyViewed {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("recently_viewed")
+}
+
+model AIConversation {
+  id        String   @id @default(cuid())
+  userId    String?
+  messages  Json
+  context   Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("ai_conversations")
+}
+
+model Outfit {
+  id          String   @id @default(cuid())
+  name        String
+  description String?  @db.Text
+  userId      String?
+  productIds  String[]
+  skinType    SkinType?
+  imageUrl    String?
+  isPublic    Boolean  @default(false)
+  likes       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("outfits")
+}
