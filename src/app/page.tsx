@@ -56,11 +56,11 @@ export default function Home() {
   ]
 
   const categories = [
-    { name: "BODY CARE", department: "BODY CARE", slug: "body-care", icon: "/icons/icon-5.png" },
+    { name: "BODY CARE", department: "BODY CARE", slug: "body-care", icon: "/icons/body-care-icon.png" },
     { name: "SKINCARE", department: "SKINCARE", slug: "skincare", icon: "/icons/icon-3.png" },
     { name: "FRAGRANCE", department: "FRAGRANCE", slug: "fragrance", icon: "/icons/icon-6.png" },
     { name: "BATH & SHOWER", department: "BATH & SHOWER", slug: "bath-shower", icon: "/icons/icon-7.png" },
-    { name: "HAIR CARE", department: "HAIR CARE", slug: "hair-care", icon: "/icons/icon-1.png" },
+    { name: "HAIR CARE", department: "HAIR CARE", slug: "hair-care", icon: "/icons/hair-care-icon.png", customClass: "scale-[0.8]" },
     { name: "HOME FRAGRANCE", department: "HOME FRAGRANCE", slug: "home-fragrance", icon: "/icons/icon-2.png" },
   ]
 
@@ -193,7 +193,7 @@ export default function Home() {
                 <div className="text-center">
                   <div className="text-4xl mb-2 group-hover:scale-110 transition-transform flex items-center justify-center">
                     {category.icon.startsWith('/') ? (
-                      <div className="relative w-12 h-12">
+                      <div className={`relative w-12 h-12 ${(category as any).customClass || ""}`}>
                         <Image src={category.icon} alt={category.name} fill className="object-contain dark:invert" />
                       </div>
                     ) : (
@@ -209,29 +209,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Promotions */}
-      <section className="py-12 bg-muted/30">
-        <div className="container">
-          <div className="grid md:grid-cols-2 gap-6">
-            {promotions.map((promo, index) => (
-              <Card key={index} className={`border-0 overflow-hidden ${promo.color} text-white`}>
-                <CardContent className="p-8 flex items-center justify-between">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-2">{promo.title}</h3>
-                    <p className="opacity-90 mb-4">{promo.subtitle}</p>
-                    <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
-                      {promo.code}
-                    </Badge>
-                  </div>
-                  <Button size="lg" variant="secondary" className="bg-white text-foreground hover:bg-white/90" asChild>
-                    <Link href="/products">{t("shopNow" as any)}</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* New Arrivals */}
       <section className="py-16">

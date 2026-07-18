@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import { FloatingAssistant } from "@/components/ai/floating-assistant";
+import { AuthProvider } from "@/components/auth-provider";
 import { Libre_Baskerville } from "next/font/google";
 
 const libreBaskerville = Libre_Baskerville({
@@ -73,15 +74,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans antialiased ${libreBaskerville.variable}`}>
-        <ThemeProvider defaultTheme="system" storageKey="ai-shop-theme">
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <Toaster />
-          <FloatingAssistant />
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider defaultTheme="system" storageKey="ai-shop-theme">
+            <div className="flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <Toaster />
+            <FloatingAssistant />
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

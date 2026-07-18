@@ -128,8 +128,8 @@ export function FloatingAssistant() {
             <X className="h-6 w-6" />
           ) : (
             <div className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-indigo-500" />
-              <span className="font-bold text-base bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">{t("askAIAssistant" as any, "Ask AI Assistant")}</span>
+              <Sparkles className="h-5 w-5 text-amber-500" />
+              <span className="font-bold text-base bg-gradient-to-r from-primary via-amber-500 to-orange-500 bg-clip-text text-transparent">{t("askAIAssistant" as any, "Ask AI Assistant")}</span>
             </div>
           )}
         </Button>
@@ -154,7 +154,7 @@ export function FloatingAssistant() {
                       <Sparkles className="h-5 w-5 text-primary-foreground" />
                     </div>
                     <div>
-                      <h3 className="font-semibold">{t("aiTitle" as any, "AI Assistant")}</h3>
+                      <h3 className="font-semibold">Clove's Assistant</h3>
                       <p className="text-xs text-muted-foreground">{t("aiSubtitle" as any, "Your personal stylist")}</p>
                     </div>
                   </div>

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { signIn } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -17,7 +18,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
@@ -36,37 +37,46 @@ export default function LoginPage() {
       return
     }
 
-    // Simulate network request for auth
-    setTimeout(() => {
-      const usersStr = localStorage.getItem('demo-users')
-      const users = usersStr ? JSON.parse(usersStr) : []
-
+    // Use NextAuth signIn
+    try {
       if (isSignUp) {
-        // Check if user already exists
-        if (users.find((u: any) => u.email === email)) {
-          setError('User already exists. Please sign in.')
-          setIsLoading(false)
-          return
+        const res = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, name }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          setError(data.message || t("invalidCredentials" as any) || 'Kayıt sırasında bir hata oluştu.');
+          setIsLoading(false);
+          return;
         }
-        // Register new user
-        users.push({ email, password, name })
-        localStorage.setItem('demo-users', JSON.stringify(users))
-        localStorage.setItem('demo-auth', 'true')
-        localStorage.setItem('demo-email', email)
-        window.location.href = '/'
-      } else {
-        // Sign in
-        const user = users.find((u: any) => u.email === email && u.password === password)
-        if (user) {
-          localStorage.setItem('demo-auth', 'true')
-          localStorage.setItem('demo-email', email)
-          window.location.href = '/'
-        } else {
-          setError('Invalid credentials. Please try again or create an account.')
-          setIsLoading(false)
-        }
+
+        // If signup is successful, we can sign them in automatically or show a success message
+        // Let's just fall through to the signIn below!
       }
-    }, 800)
+
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (result?.error) {
+        // Error
+        setError(t("invalidCredentials" as any) || 'Hatalı e-posta veya şifre. Lütfen tekrar deneyin.');
+        setIsLoading(false);
+      } else if (result?.ok) {
+        // Success
+        router.push('/');
+        router.refresh();
+      }
+    } catch (e: any) {
+      console.error(e);
+      setError(t("invalidCredentials" as any) || 'Hatalı e-posta veya şifre. Lütfen tekrar deneyin.');
+      setIsLoading(false);
+    }
   }
 
   return (

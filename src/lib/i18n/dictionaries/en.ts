@@ -152,6 +152,7 @@ export const en = {
   privacyPolicy: "Privacy Policy",
   termsOfService: "Terms of Service",
   cookiePolicy: "Cookie Policy",
+  allRightsReserved: "All rights reserved.",
   footerDesc: "Premium beauty destination for skincare, body care, fragrances, and more. Discover your unique glow.",
 
   // Cart & Orders

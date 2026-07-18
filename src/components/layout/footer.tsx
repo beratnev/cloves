@@ -37,6 +37,9 @@ export function Footer() {
                 <Youtube className="h-4 w-4" />
               </Button>
             </div>
+            <div className="mt-4">
+              <span className="inline-flex items-center rounded-md bg-primary/10 px-4 py-2 text-base font-semibold text-primary ring-1 ring-inset ring-primary/20">v1.0.1</span>
+            </div>
           </div>
 
           <div>
@@ -130,7 +133,9 @@ export function Footer() {
         <Separator className="my-8" />
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <p>&copy; 2026 Clove's. {t("allRightsReserved" as any) || "Tüm hakları saklıdır."}</p>
+          <div className="flex flex-col gap-1 items-center md:items-start">
+            <p>&copy; 2026 Clove's. {t("allRightsReserved" as any) || "Tüm hakları saklıdır."}</p>
+          </div>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-foreground transition-colors">
               {t("privacyPolicy" as any)}

@@ -152,6 +152,7 @@ export const tr = {
   privacyPolicy: "Gizlilik Politikası",
   termsOfService: "Hizmet Şartları",
   cookiePolicy: "Çerez Politikası",
+  allRightsReserved: "Tüm hakları saklıdır.",
   footerDesc: "Cilt bakımı, vücut bakımı, parfümler ve daha fazlası için birinci sınıf güzellik adresi. Kendi ışıltınızı keşfedin.",
 
   // Cart & Orders

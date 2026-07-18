@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { ProductCard } from "@/components/shop/product-card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -38,7 +39,6 @@ const categories = [
   "SKINCARE",
   "HAIR CARE",
   "HOME FRAGRANCE",
-  "GIFTS",
   "SALE"
 ]
 
@@ -59,6 +59,7 @@ export default function ProductsPage() {
   const [sortBy, setSortBy] = useState("featured")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [showFilters, setShowFilters] = useState(false)
+  const searchParams = useSearchParams()
 
   const getCategoryTranslation = (category: string) => {
     const keyMap: Record<string, string> = {
@@ -112,6 +113,27 @@ export default function ProductsPage() {
     }
   }, [])
 
+  // React to URL parameter changes (like search, sort, category)
+  useEffect(() => {
+    if (searchParams) {
+      const search = searchParams.get('search')
+      if (search !== null) {
+        setSearchQuery(search)
+      }
+      
+      const sort = searchParams.get('sort')
+      if (sort) {
+        setSortBy(sort)
+      }
+
+      const categoryParam = searchParams.get('category')
+      if (categoryParam) {
+        const categoryMatch = categories.find(c => c.toLowerCase() === categoryParam.toLowerCase())
+        if (categoryMatch) setSelectedCategory(categoryMatch)
+      }
+    }
+  }, [searchParams])
+
   // Reset dynamic filters when category changes
   useEffect(() => {
     setActiveFilters({})
@@ -138,7 +160,16 @@ export default function ProductsPage() {
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = selectedCategory === "All" || product.department === selectedCategory || product.category === selectedCategory
+    let matchesCategory = false;
+    if (selectedCategory === "All") {
+      matchesCategory = true;
+    } else if (selectedCategory === "SALE") {
+      matchesCategory = !!product.discountPrice;
+    } else if (selectedCategory === "NEW") {
+      matchesCategory = true;
+    } else {
+      matchesCategory = product.department === selectedCategory || product.category === selectedCategory;
+    }
     const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1]
     
     let matchesDynamic = true
@@ -196,7 +227,7 @@ export default function ProductsPage() {
     })
   }
 
-  const hasActiveFilters = selectedCategory !== "All" || Object.values(activeFilters).some(v => v !== "All") || priceRange[0] > 0 || priceRange[1] < 500
+  const hasActiveFilters = Object.values(activeFilters).some(v => v !== "All") || priceRange[0] > 0 || priceRange[1] < 500
 
   const renderFilters = () => (
     <div className="space-y-6">
@@ -268,25 +299,20 @@ export default function ProductsPage() {
           </Button>
         </div>
         <div className="flex flex-wrap gap-2">
-          {selectedCategory !== "All" && (
-            <Badge variant="secondary" className="gap-1">
-              {getCategoryTranslation(selectedCategory)}
-              <X className="h-3 w-3 cursor-pointer" onClick={() => setSelectedCategory("All")} />
-            </Badge>
-          )}
+
           {Object.entries(activeFilters).map(([filterId, value]) => {
             if (!value || value === "All") return null;
             return (
               <Badge key={filterId} variant="secondary" className="gap-1">
                 {t(`filterOpt_${value.replace(/\s+/g, "")}` as any, value)}
-                <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter(filterId)} />
+                <X className="h-3 w-3 cursor-pointer" onClick={(e) => { e.preventDefault(); e.stopPropagation(); removeFilter(filterId); }} />
               </Badge>
             )
           })}
           {(priceRange[0] > 0 || priceRange[1] < 500) && (
             <Badge variant="secondary" className="gap-1">
               ${priceRange[0]} - ${priceRange[1]}
-              <X className="h-3 w-3 cursor-pointer" onClick={() => setPriceRange([0, 500])} />
+              <X className="h-3 w-3 cursor-pointer" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setPriceRange([0, 500]); }} />
             </Badge>
           )}
         </div>

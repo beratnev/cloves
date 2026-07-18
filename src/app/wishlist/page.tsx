@@ -29,12 +29,12 @@ export default function WishlistPage() {
         </div>
 
         <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild size="lg" className="w-full sm:w-auto">
-            <Link href="/products">
+          <Link href="/products" className="w-full sm:w-auto">
+            <Button size="lg" className="w-full">
               <ShoppingBag className="w-4 h-4 mr-2" />
               {t("continueShopping" as any)}
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </div>
       </motion.div>
     </div>
