@@ -63,9 +63,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.6.2"
   },
-  "prisma": {
-    "seed": "node prisma/seed.js"
-  },
+
   "allowScripts": {
     "@prisma/engines@6.0.0": true,
     "prisma@6.0.0": true,
