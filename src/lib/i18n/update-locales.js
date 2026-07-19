@@ -14,7 +14,6 @@ function updateEn() {
   content = content.replace('showSimilarQuery: "Show me products similar to this",', 'showSimilarQuery: "Show me products with similar ingredients",');
   content = content.replace('styleAdviceAction: "Style advice",', 'styleAdviceAction: "Skincare advice",');
   content = content.replace('styleAdviceQuery: "What should I wear for a casual dinner?",', 'styleAdviceQuery: "What skincare routine is best for dry skin?",');
-  content = content.replace('wishlistAction: "Wishlist suggestions",', 'wishlistAction: "Wishlist suggestions",');
   content = content.replace('sizeHelpAction: "Size help",', 'sizeHelpAction: "Skin type help",');
   content = content.replace('sizeHelpQuery: "What size should I get?",', 'sizeHelpQuery: "Which moisturizer is best for my skin type?",');
   content = content.replace('aiTitle: "AI Shopping Assistant",', 'aiTitle: "AI Beauty Assistant",');
@@ -37,7 +36,6 @@ function updateTr() {
   content = content.replace('showSimilarQuery: "Buna benzer ürünleri göster",', 'showSimilarQuery: "Benzer içeriklere sahip ürünler göster",');
   content = content.replace('styleAdviceAction: "Stil tavsiyesi",', 'styleAdviceAction: "Cilt bakım tavsiyesi",');
   content = content.replace('styleAdviceQuery: "Gündelik bir akşam yemeği için ne giymeliyim?",', 'styleAdviceQuery: "Kuru ciltler için en iyi cilt bakım rutini nedir?",');
-  content = content.replace('wishlistAction: "İstek listesi önerileri",', 'wishlistAction: "İstek listesi önerileri",');
   content = content.replace('sizeHelpAction: "Beden yardımı",', 'sizeHelpAction: "Cilt tipi yardımı",');
   content = content.replace('sizeHelpQuery: "Hangi bedeni almalıyım?",', 'sizeHelpQuery: "Cilt tipime uygun nemlendirici hangisi?",');
   content = content.replace('aiTitle: "Yapay Zeka Alışveriş Asistanı",', 'aiTitle: "Yapay Zeka Güzellik Asistanı",');

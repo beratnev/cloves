@@ -1,0 +1,14 @@
+diff --git a/node_modules/postcss/lib/stringifier.js b/node_modules/postcss/lib/stringifier.js
+index b1aa835..3e79487 100644
+--- a/node_modules/postcss/lib/stringifier.js
++++ b/node_modules/postcss/lib/stringifier.js
+@@ -9,7 +9,8 @@ const COMMENT_OPEN = /(<)(!--)/g
+ function escapeHTMLInCSS(str) {
+   if (typeof str !== 'string') return str
+   if (!str.includes('<')) return str
+-  return str.replace(STYLE_TAG, '\\3c $2').replace(COMMENT_OPEN, '\\3c $2')
++  let output = str.replace(STYLE_TAG, '\\3c $2').replace(COMMENT_OPEN, '\\3c $2')
++  return output.replace(/<\/(style)/gi, '<\\/$1')
+ }
+ 
+ const DEFAULT_RAW = {

@@ -432,6 +432,7 @@ export const en = {
   nav_fragrance: "Fragrance",
   nav_bodyCare: "Body Care",
   nav_bathShower: "Bath & Shower",
+  personalCare: "Personal Care",
   nav_skincare: "Skincare",
   nav_hairCare: "Hair Care",
   nav_homeFragrance: "Home Fragrance",

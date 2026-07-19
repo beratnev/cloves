@@ -431,6 +431,7 @@ export const tr = {
   nav_fragrance: "Parfüm & Koku",
   nav_bodyCare: "Vücut Bakımı",
   nav_bathShower: "Banyo & Duş",
+  personalCare: "Kişisel Bakım",
   nav_skincare: "Cilt Bakımı",
   nav_hairCare: "Saç Bakımı",
   nav_homeFragrance: "Ev Kokuları",

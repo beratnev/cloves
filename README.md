@@ -1,228 +1,113 @@
-# Clove's - AI-Powered E-Commerce Platform
+# Clove's - AI-Powered Beauty & Personal Care Platform
 
-A modern, production-ready e-commerce platform with integrated AI Shopping Assistant that helps users find products using natural language.
+A modern, production-ready e-commerce platform specializing in skincare, body care, and fragrances. Clove's features an integrated AI Shopping Assistant that helps customers find products, build beauty routines, and get personalized recommendations using natural language.
 
-## Tech Stack
+## 🚀 Tech Stack
 
 - **Frontend**: Next.js 15 (App Router), TypeScript, Tailwind CSS, shadcn/ui, Framer Motion
 - **Backend**: Next.js Server Actions, API Routes
-- **Database**: PostgreSQL with Prisma ORM
-- **Authentication**: Auth.js (NextAuth v5)
-- **Storage**: Cloudinary
-- **AI**: OpenAI API (replaceable for Gemini/Claude)
+- **Database**: Neon PostgreSQL with Prisma ORM
+- **Authentication**: Auth.js (NextAuth v5) with Role-Based Access Control (Admin / User)
+- **Media Storage**: Cloudinary
+- **AI Integration**: Google Gemini API (gemini-3.5-flash)
 - **State Management**: Zustand
-- **Forms**: React Hook Form + Zod
-- **Charts**: Recharts
+- **Forms & Validation**: React Hook Form + Zod
 
-## Features
+## ✨ Features
 
-### Core Features
-- 🤖 AI Shopping Assistant with natural language search
-- 📊 AI Product Comparison
-- 📝 AI Product Summaries
-- 🛒 Modern Shopping Cart
-- ❤️ Wishlist Management
-- 👤 User Authentication & Account Management
-- 📦 Order Management
-- ⭐ Reviews & Ratings
+### 🛍️ Customer Experience
+- **🤖 AI Shopping Assistant**: Ask questions like *"I have dry skin, what moisturizer should I use?"* or *"Recommend a floral summer perfume"* and get tailored product suggestions.
+- **🛒 Modern Shopping Cart & Checkout Flow**
+- **❤️ Wishlist Management**
+- **⭐ Product Reviews & Ratings**
+- **🌙 Dark/Light Mode & Premium Glassmorphism UI**
+- **📱 Fully Responsive & Accessible Design**
 
-### Admin Features
-- 📈 Analytics Dashboard
-- 📦 Product Management (CRUD)
-- 🏷️ Category Management
-- 🎫 Coupon Management
-- 📊 Order Management
-- 👥 Customer Management
-- 🤖 AI Content Generation (descriptions, SEO, marketing copy)
+### 🛡️ Admin Dashboard
+- **📈 Analytics Overview**
+- **📦 Product & Inventory Management** (Full CRUD)
+- **🖼️ Secure Image Uploads** (Direct to Cloudinary via Admin Panel)
+- **🏷️ Category & Brand Management**
+- **📊 Order & Customer Tracking**
 
-### UI/UX
-- 🌙 Dark Mode & Light Mode
-- 📱 Fully Responsive
-- ✨ Smooth Animations (Framer Motion)
-- 🎨 Premium Design (Glassmorphism)
-- ♿ Accessible
-- ⚡ Performance Optimized
-
-## Getting Started
+## 💻 Getting Started
 
 ### Prerequisites
+- Node.js 18+
+- A PostgreSQL database (e.g., Neon, Supabase, local)
+- Google Gemini API Key
+- Cloudinary Account
 
-- Node.js 18+ 
-- PostgreSQL database
-- OpenAI API key
-- Cloudinary account
-
-### Installation
-
-1. **Clone the repository**
+### 1. Clone the repository
 ```bash
-git clone https://github.com/beratnev/ai-shop.git
-cd ai-shop
+git clone https://github.com/beratnev/cloves.git
+cd cloves
 ```
 
-2. **Install dependencies**
+### 2. Install dependencies
 ```bash
 npm install
 ```
 
-3. **Set up environment variables**
+### 3. Set up environment variables
+Copy the example environment file:
 ```bash
 cp .env.example .env
 ```
-
-Edit `.env` with your values:
+Open `.env` and fill in your credentials:
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/ai_shop"
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/cloves"
+
+# Authentication (Generate a random 32-char string)
 NEXTAUTH_SECRET="your-secret-key"
-NEXTAUTH_URL="http://localhost:3000"
-OPENAI_API_KEY="your-openai-api-key"
-CLOUDINARY_CLOUD_NAME="your-cloud-name"
-CLOUDINARY_API_KEY="your-api-key"
-CLOUDINARY_API_SECRET="your-api-secret"
+APP_URL="http://localhost:3000"
+
+# AI
+GEMINI_API_KEY="your-gemini-api-key"
+
+# Media Storage
+CLOUDINARY_URL="cloudinary://API_KEY:API_SECRET@CLOUD_NAME"
+
+# Admin Setup
+ADMIN_EMAIL="cloves@admin.com"
+ADMIN_PASSWORD="your-secure-password"
 ```
 
-4. **Set up the database**
+### 4. Initialize the Database
+Push the Prisma schema to your database and seed it with initial data:
 ```bash
 npx prisma db push
 npx prisma db seed
 ```
 
-5. **Set up the Admin User**
-By default, the application does not hardcode any admin passwords. You must create your own admin account through environment variables:
-Open `.env` and add:
-```env
-ADMIN_EMAIL="your_admin_email@example.com"
-ADMIN_PASSWORD="your_secure_password"
-```
-Log in using these exact credentials. You will automatically be granted the `ADMIN` role. No other user can gain admin privileges.
-
-6. **Run the development server**
+### 5. Start the Development Server
 ```bash
 npm run dev
 ```
-
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Project Structure
+## 🔐 Admin Access
+This project uses environment variables to securely define the admin user. When you log in using the exact credentials specified in `ADMIN_EMAIL` and `ADMIN_PASSWORD` in your `.env` file, the system will automatically grant you the `ADMIN` role. 
 
-```
-ai-shop/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── (auth)/            # Auth routes
-│   │   ├── (shop)/            # Shop routes
-│   │   ├── admin/             # Admin dashboard
-│   │   └── api/               # API routes
-│   ├── components/
-│   │   ├── ui/                # shadcn/ui components
-│   │   ├── layout/            # Layout components
-│   │   ├── shop/              # Shop components
-│   │   └── admin/             # Admin components
-│   ├── lib/
-│   │   ├── ai/                # AI integrations
-│   │   ├── auth/              # Auth configuration
-│   │   ├── store/             # State management
-│   │   └── utils.ts           # Utility functions
-│   └── types/                 # TypeScript types
-├── prisma/
-│   ├── schema.prisma          # Database schema
-│   └── seed.js                # Seed data
-└── public/                    # Static assets
-```
+*No other users who register normally can access the admin dashboard.*
 
-## Database Schema
+## 🚀 Deployment (Vercel)
 
-The application uses PostgreSQL with the following main models:
-- Users (with authentication)
-- Products (with categories, images, reviews)
-- Categories
-- Orders & Order Items
-- Reviews
-- Wishlist
-- Coupons
-- Addresses
+1. Push your code to GitHub.
+2. Import the repository into Vercel.
+3. Add all your environment variables in the Vercel Settings.
+4. Deploy!
 
-## AI Features
+### Custom Domain (Namecheap)
+If you are deploying to a custom subdomain like `cloves.beratnev.com`, add a CNAME record in your DNS settings:
+- **Type**: CNAME
+- **Host**: cloves
+- **Value**: `cname.vercel-dns.com` (or your specific Vercel project URL)
+- **TTL**: Automatic
 
-### AI Shopping Assistant
-Users can search using natural language:
-- "I need a gaming laptop under $1500"
-- "Best headphones for music production"
-- "Gift ideas for my father's birthday"
+## 📝 License
+MIT License
 
-The AI understands intent, searches products, and provides personalized recommendations.
-
-### AI Product Comparison
-Select multiple products and get AI-generated comparisons:
-- Performance analysis
-- Pros & cons
-- Best value recommendation
-- Target audience suggestions
-
-### AI Admin Tools
-Generate product content automatically:
-- Product descriptions
-- SEO titles & meta descriptions
-- Marketing copy
-- Social media captions
-
-## Deployment
-
-### Vercel Deployment
-
-1. **Push to GitHub**
-```bash
-git add .
-git commit -m "Initial commit"
-git push origin main
-```
-
-2. **Deploy on Vercel**
-- Import your GitHub repository
-- Add environment variables
-- Deploy
-
-### DNS Configuration
-
-To deploy to `ai-shop.beratnev.com`, add the following CNAME record in Namecheap:
-
-```
-Type: CNAME
-Host: ai-shop
-Value: [your-vercel-project].vercel.app
-TTL: Automatic
-```
-
-## Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `DATABASE_URL` | PostgreSQL connection string | Yes |
-| `NEXTAUTH_SECRET` | NextAuth secret key | Yes |
-| `NEXTAUTH_URL` | Application URL | Yes |
-| `OPENAI_API_KEY` | OpenAI API key | Yes |
-| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name | Yes |
-| `CLOUDINARY_API_KEY` | Cloudinary API key | Yes |
-| `CLOUDINARY_API_SECRET` | Cloudinary API secret | Yes |
-| `ADMIN_EMAIL` | The email address to access the Admin dashboard | Yes |
-| `ADMIN_PASSWORD` | The password to access the Admin dashboard | Yes |
-
-## Scripts
-
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run db:push      # Push schema to database
-npm run db:seed      # Seed database
-npm run db:studio    # Open Prisma Studio
-```
-
-## License
-
-MIT
-
-## Support
-
-For support, email support@cloves.beratnev.com or open an issue on GitHub.
+## 💬 Support
+For support or inquiries, please contact `support@cloves.beratnev.com` or open an issue on GitHub.

@@ -45,7 +45,7 @@ export function ProductCard({ product }: ProductCardProps) {
   }
 
   const optimizeCloudinaryUrl = (url: string) => {
-    if (!url || !url.includes('cloudinary.com')) return url;
+    if (!url || !url.startsWith('https://res.cloudinary.com/')) return url;
     return url.replace('/upload/', '/upload/q_auto,f_auto,w_500/');
   }
 

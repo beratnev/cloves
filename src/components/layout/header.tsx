@@ -89,7 +89,7 @@ export function Header() {
       categories: ["Shower Gel", "Body Wash", "Soap", "Bath Bombs", "Bath Salts", "Bubble Bath"]
     },
     {
-      name: t("skincare" as any, "Skincare"),
+      name: t("personalCare" as any, "Personal Care"),
       slug: "skincare",
       categories: ["Cleansers", "Toners", "Serums", "Moisturizers", "Eye Care", "Face Masks", "Sunscreen", "Peeling"]
     },
@@ -295,7 +295,7 @@ export function Header() {
                     {t("bathShower" as any, "Bath & Shower")}
                   </Link>
                   <Link href="/categories/skincare" className="text-sm font-medium transition-colors hover:text-primary">
-                    {t("skincare" as any, "Skincare")}
+                    {t("personalCare" as any, "Personal Care")}
                   </Link>
                   <Link href="/categories/hair-care" className="text-sm font-medium transition-colors hover:text-primary">
                     {t("hairCare" as any, "Hair Care")}

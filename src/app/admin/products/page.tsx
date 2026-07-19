@@ -1001,7 +1001,7 @@ export default function AdminProductsPage() {
                       <div className="flex items-center gap-3">
                         <div className="relative h-10 w-10 rounded-md overflow-hidden bg-muted">
                           <Image 
-                            src={product.images && product.images.length > 0 ? (product.images[0].secureUrl.includes('cloudinary.com') ? product.images[0].secureUrl.replace('/upload/', '/upload/q_auto,f_auto,w_100/') : product.images[0].secureUrl) : "/placeholder-product.jpg"} 
+                            src={product.images && product.images.length > 0 ? (product.images[0].secureUrl.startsWith('https://res.cloudinary.com/') ? product.images[0].secureUrl.replace('/upload/', '/upload/q_auto,f_auto,w_100/') : product.images[0].secureUrl) : "/placeholder-product.jpg"} 
                             alt={product.name}
                             fill
                             className="object-cover"
