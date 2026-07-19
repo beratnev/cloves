@@ -1,12 +1,12 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Facebook, Twitter, Instagram, Youtube, Mail, MapPin, Phone } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useTranslation } from "@/lib/i18n"
-import { Logo } from "@/components/ui/logo"
 
 export function Footer() {
   const { t } = useTranslation()
@@ -16,9 +16,8 @@ export function Footer() {
       <div className="container py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Logo width={48} height={48} className="text-primary" />
-              <span className="font-bold text-2xl" style={{ fontFamily: 'var(--font-libre-baskerville)' }}>Clove's</span>
+            <div className="flex items-center">
+              <Image src="/logo.png" alt="Clove's" width={216} height={81} className="object-contain" />
             </div>
             <p className="text-sm text-muted-foreground">
               {t("footerDesc" as any)}
@@ -38,7 +37,7 @@ export function Footer() {
               </Button>
             </div>
             <div className="mt-4">
-              <span className="inline-flex items-center rounded-md bg-primary/10 px-4 py-2 text-base font-semibold text-primary ring-1 ring-inset ring-primary/20">v1.2.0</span>
+              <span className="inline-flex items-center rounded-md bg-primary/10 px-4 py-2 text-base font-semibold text-primary ring-1 ring-inset ring-primary/20">v1.2.1</span>
             </div>
           </div>
 
