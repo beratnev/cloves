@@ -6,10 +6,12 @@ import { Heart, ShoppingCart, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Price } from "@/components/ui/price"
 import { motion } from "framer-motion"
 import { useState } from "react"
 import { useCartStore } from "@/lib/store/cart"
 import { useTranslation } from "@/lib/i18n"
+import { translateDbString } from "@/lib/i18n/db-translations"
 
 interface ProductCardProps {
   product: {
@@ -27,7 +29,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const [isWishlisted, setIsWishlisted] = useState(false)
   const { addItem } = useCartStore()
   const discount = product.discountPrice
@@ -54,9 +56,10 @@ export function ProductCard({ product }: ProductCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
+      className="h-full"
     >
-      <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300">
-        <CardContent className="p-0">
+      <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+        <CardContent className="p-0 flex flex-col h-full">
           <Link href={`/products/${product.slug}`}>
             <div className="relative aspect-square overflow-hidden bg-transparent">
               <Image
@@ -80,32 +83,26 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           </Link>
 
-          <div className="p-4 space-y-3">
+          <div className="p-4 flex flex-col flex-1 justify-between gap-3">
             <div>
-              <p className="text-xs text-muted-foreground mb-1">{product.category}</p>
+              <p className="text-xs text-muted-foreground mb-1">{translateDbString(product.category, language)}</p>
               <Link href={`/products/${product.slug}`}>
-                <h3 className="font-semibold line-clamp-2 group-hover:text-primary transition-colors">
-                  {product.name}
+                <h3 className="text-[15px] font-semibold line-clamp-2 group-hover:text-primary transition-colors">
+                  {translateDbString(product.name, language)}
                 </h3>
               </Link>
             </div>
 
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mt-auto">
               <div className="flex items-center gap-2">
                 {product.discountPrice ? (
                   <>
-                    <span className="font-bold text-lg">
-                      ${product.discountPrice.toFixed(2)}
-                    </span>
-                    <span className="text-sm text-muted-foreground line-through">
-                      ${product.price.toFixed(2)}
-                    </span>
+                    <Price amount={product.discountPrice} className="font-bold text-lg" />
+                    <Price amount={product.price} className="text-sm text-muted-foreground line-through" />
                   </>
                 ) : (
-                  <span className="font-bold text-lg">
-                    ${product.price.toFixed(2)}
-                  </span>
+                  <Price amount={product.price} className="font-bold text-lg" />
                 )}
               </div>
 

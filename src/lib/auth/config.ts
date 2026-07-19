@@ -25,32 +25,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
-        const adminEmail = process.env.ADMIN_EMAIL;
-        const adminPassword = process.env.ADMIN_PASSWORD;
-
-        // Hardcoded admin logic via ENV variables
-        if (adminEmail && credentials.email === adminEmail) {
-          if (credentials.password === adminPassword) {
-            const adminUser = await prisma.user.upsert({
-              where: { email: adminEmail },
-              update: { role: "ADMIN" },
-              create: {
-                email: adminEmail,
-                name: "Admin",
-                role: "ADMIN",
-              }
-            });
-            return {
-              id: adminUser.id,
-              email: adminUser.email,
-              name: adminUser.name,
-              role: adminUser.role,
-            };
-          }
-          // If email matches but password doesn't, reject immediately
-          return null;
-        }
-
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email as string,
@@ -82,12 +56,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        let role = (user as any).role;
-        // Enforce that only the defined ADMIN_EMAIL can have the ADMIN role
-        if (role === "ADMIN" && user.email !== process.env.ADMIN_EMAIL) {
-          role = "USER";
-        }
-        token.role = role;
+        token.role = (user as any).role;
       }
       return token;
     },

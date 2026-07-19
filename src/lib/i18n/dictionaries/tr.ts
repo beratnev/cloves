@@ -2,7 +2,7 @@ export const tr = {
   // Navigation / Header
   bodyCare: "Vücut Bakımı",
   faceCare: "Yüz Bakımı",
-  fragrance: "Parfüm & Koku",
+  fragrance: "Parfüm",
   hairCare: "Saç Bakımı",
   homeFragrance: "Ev Kokuları",
   gifts: "Hediyeler",
@@ -45,10 +45,13 @@ export const tr = {
   verifiedPurchase: "Onaylanmış Alışveriş",
   needHelp: "Mükemmel Ürünü Bulmakta Yardıma Mı İhtiyacınız Var?",
   aiAssistantDesc: "Yapay zeka destekli kozmetik asistanımız cilt tipinize, tercihlerinize ve rutininize uygun ürünleri keşfetmeniz için burada.",
-  styleAdvice: "Güzellik Tavsiyesi",
+  styleAdvice: "Clove's AI Önerisi",
   styleAdviceDesc: "Size özel cilt bakımı ve koku önerileri alın",
   outfitIdeas: "Rutin Fikirleri",
   outfitIdeasDesc: "İhtiyaçlarınıza uyan eksiksiz bakım rutinleri keşfedin",
+  aiProductAdvice: "Clove's AI Önerisi",
+  keyBenefits: "Temel Faydaları",
+  usageTips: "Kullanım Önerileri",
   instantHelp: "Anında Yardım",
   instantHelpDesc: "Sorular sorun ve anında cevap alın",
   tryAiAssistant: "AI Asistanı Dene",
@@ -57,7 +60,7 @@ export const tr = {
   enterEmail: "E-posta adresinizi girin",
   subscribe: "Abone Ol",
   freeShipping: "Ücretsiz Kargo",
-  freeShippingDesc: "20$ üzeri siparişlerde",
+  freeShippingDesc: "800 TL üzeri siparişlerde",
   securePayment: "Güvenli Ödeme",
   securePaymentDesc: "%100 korumalı",
   easyReturns: "Kolay İade",
@@ -502,6 +505,20 @@ export const tr = {
   catInfo_SALE: "İndirim",
 
   // Assistant
-  tryAsking: "Şunu sormayı deneyin:"
+  tryAsking: "Şunu sormayı deneyin:",
 
+  // Product Details Labels
+  departmentLabel: "Departman",
+  barcodeLabel: "Barkod",
+  weightLabel: "Ağırlık (g)",
+  dimensionsLabel: "Boyutlar",
+  ingredientsLabel: "İçindekiler",
+  howToUseLabel: "Kullanım Şekli",
+  skinType: "Cilt Tipi",
+  fragranceFamily: "Koku Ailesi",
+  productType: "Ürün Tipi",
+  gender: "Cinsiyet",
+  benefits: "Faydaları",
+  volume: "Hacim",
+  loading: "Yükleniyor...",
 }

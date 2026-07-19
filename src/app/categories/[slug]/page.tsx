@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
+import { useSearchParams } from "next/navigation"
 import { ProductCard } from "@/components/shop/product-card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,14 +10,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { Filter, X, Grid, List, Search } from "lucide-react"
-import { use } from "react"
+import { Filter, X, Grid, List, Search, Loader2 } from "lucide-react"
 import { useTranslation } from "@/lib/i18n"
 import { departmentFilters } from "@/lib/config/filters"
 
 interface AdminProduct {
   id: string
   name: string
+  slug?: string
   sku: string
   category: string
   brand: string
@@ -58,7 +59,9 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
   const departmentName = slugToDepartment[slug] || slug.toUpperCase()
   const info = { title: t(("catInfo_" + departmentName.replace(/ /g, "").replace(/&/g, "")) as any, departmentName), description: "" }
   
+  const searchParams = useSearchParams()
   const [adminProducts, setAdminProducts] = useState<AdminProduct[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [priceRange, setPriceRange] = useState([0, 500])
   const [sortBy, setSortBy] = useState("featured")
@@ -72,6 +75,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoading(true)
       try {
         const res = await fetch('/api/admin/products?limit=50')
         const data = await res.json()
@@ -80,14 +84,24 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
         }
       } catch (e) {
         console.error(e)
+      } finally {
+        setIsLoading(false)
       }
     }
     fetchProducts()
 
-    // Reset filters when slug changes
-    setActiveFilters({})
+    // Extract filters from URL query params
+    const initialFilters: Record<string, string> = {}
+    if (searchParams) {
+      searchParams.forEach((value, key) => {
+        if (key !== "sort" && key !== "search") {
+          initialFilters[key] = value
+        }
+      })
+    }
+    setActiveFilters(initialFilters)
     setPriceRange([0, 500])
-  }, [slug])
+  }, [slug, searchParams])
 
   // Convert admin products to display format
   const products = adminProducts
@@ -95,7 +109,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
     .map(p => ({
       id: p.id,
       name: p.name,
-      slug: p.name.toLowerCase().replace(/\s+/g, '-'),
+      slug: p.slug || p.name.toLowerCase().replace(/\s+/g, '-'),
       price: p.price,
       discountPrice: p.comparePrice || undefined,
       images: p.images.length > 0 ? p.images.map((img: any) => img.secureUrl) : ["/placeholder-product.jpg"],
@@ -109,7 +123,8 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1]
+    const effectivePrice = product.discountPrice || product.price
+    const matchesPrice = effectivePrice >= priceRange[0] && (priceRange[1] >= 500 ? true : effectivePrice <= priceRange[1])
     
     let matchesDynamic = true
     for (const [filterId, selectedValue] of Object.entries(activeFilters)) {
@@ -237,6 +252,17 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
     )
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+        <p className="text-muted-foreground font-medium tracking-tight animate-pulse">
+          {t("loading" as any) || "Loading..."}
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="container py-8">
       {/* Header */}
@@ -249,17 +275,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
       </div>
 
       {/* Search and Filters Bar */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder={t("searchPlaceholder" as any) || "Search products..."}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
-          />
-        </div>
-
+      <div className="flex flex-col md:flex-row md:justify-end gap-4 mb-8">
         <Sheet open={showFilters} onOpenChange={setShowFilters}>
           <SheetTrigger asChild>
             <Button variant="outline" className="md:hidden">
@@ -293,18 +309,10 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
 
         <div className="hidden md:flex gap-2">
           <Button
-            variant={viewMode === "grid" ? "default" : "outline"}
+            variant="default"
             size="icon"
-            onClick={() => setViewMode("grid")}
           >
             <Grid className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={viewMode === "list" ? "default" : "outline"}
-            size="icon"
-            onClick={() => setViewMode("list")}
-          >
-            <List className="h-4 w-4" />
           </Button>
         </div>
       </div>

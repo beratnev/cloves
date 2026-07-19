@@ -45,7 +45,7 @@ export const en = {
   verifiedPurchase: "Verified Purchase",
   needHelp: "Need Help Finding the Perfect Product?",
   aiAssistantDesc: "Our AI-powered beauty assistant is here to help you discover products that match your skin type, preferences, and routine.",
-  styleAdvice: "Beauty Advice",
+  styleAdvice: "Clove's AI Advice",
   styleAdviceDesc: "Get personalized skincare and fragrance recommendations",
   outfitIdeas: "Routine Ideas",
   outfitIdeasDesc: "Discover complete care routines that match your needs",
@@ -57,7 +57,7 @@ export const en = {
   enterEmail: "Enter your email",
   subscribe: "Subscribe",
   freeShipping: "Free Shipping",
-  freeShippingDesc: "On orders over $100",
+  freeShippingDesc: "On orders over $20",
   securePayment: "Secure Payment",
   securePaymentDesc: "100% protected",
   easyReturns: "Easy Returns",
@@ -503,6 +503,23 @@ export const en = {
   catInfo_SALE: "Sale",
 
   // Assistant
-  tryAsking: "Try asking:"
+  tryAsking: "Try asking:",
 
+  // Product Details Labels
+  departmentLabel: "Department",
+  barcodeLabel: "Barcode",
+  weightLabel: "Weight (g)",
+  dimensionsLabel: "Dimensions",
+  ingredientsLabel: "Ingredients",
+  howToUseLabel: "How to Use",
+  skinType: "Skin Type",
+  fragranceFamily: "Fragrance Family",
+  productType: "Product Type",
+  gender: "Gender",
+  benefits: "Benefits",
+  volume: "Volume",
+  keyBenefits: "Key Benefits",
+  usageTips: "Usage Tips",
+  aiProductAdvice: "Clove's AI Advice",
+  loading: "Loading...",
 }

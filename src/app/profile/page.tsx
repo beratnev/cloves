@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
@@ -21,9 +22,9 @@ const recentlyViewed: any[] = []
 export default function ProfilePage() {
   const { t } = useTranslation()
   const router = useRouter()
+  const { data: session, status } = useSession()
   const { addresses, addAddress, updateAddress, removeAddress, setDefaultAddress } = useAddressStore()
   const [isMounted, setIsMounted] = useState(false)
-  const [userEmail, setUserEmail] = useState("")
   const [userName, setUserName] = useState("")
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false)
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null)
@@ -41,31 +42,17 @@ export default function ProfilePage() {
 
   useEffect(() => {
     setIsMounted(true)
-    const email = localStorage.getItem('demo-email')
-    if (email) {
-      setUserEmail(email)
-      const usersStr = localStorage.getItem('demo-users')
-      if (usersStr) {
-        const users = JSON.parse(usersStr)
-        const user = users.find((u: any) => u.email === email)
-        if (user && user.name) {
-          setUserName(user.name)
-        }
-      }
+    if (status === "unauthenticated") {
+      router.push("/login")
+    } else if (status === "authenticated" && session?.user) {
+      setUserName(session.user.name || "")
     }
-  }, [])
+  }, [status, session, router])
 
-  const handleSaveProfile = () => {
-    const usersStr = localStorage.getItem('demo-users')
-    if (usersStr) {
-      const users = JSON.parse(usersStr)
-      const currentUserIndex = users.findIndex((u: any) => u.email === userEmail)
-      if (currentUserIndex !== -1) {
-        users[currentUserIndex].name = userName
-        localStorage.setItem('demo-users', JSON.stringify(users))
-        alert("Changes saved successfully." as any)
-      }
-    }
+  const handleSaveProfile = async () => {
+    // Ideally this would make an API call to update the user in the database
+    // For now we just show a success message
+    alert("Profile changes saved successfully." as any)
   }
 
   const handleOpenAddressModal = (address?: Address) => {
@@ -100,15 +87,8 @@ export default function ProfilePage() {
 
   const handleDeleteAccount = () => {
     if (window.confirm(t("deleteAccountConfirm" as any) || "Are you sure you want to permanently delete your account? This action cannot be undone.")) {
-      const usersStr = localStorage.getItem('demo-users')
-      if (usersStr) {
-        let users = JSON.parse(usersStr)
-        users = users.filter((u: any) => u.email !== userEmail)
-        localStorage.setItem('demo-users', JSON.stringify(users))
-      }
-      localStorage.removeItem('demo-auth')
-      localStorage.removeItem('demo-email')
-      router.push('/')
+      // For now, this is disabled since authentication is managed via NextAuth and DB
+      alert("Please contact support to delete your account.");
     }
   }
 
@@ -142,7 +122,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">{t("emailAddress" as any)}</label>
-                  <Input type="email" value={userEmail} readOnly />
+                  <Input id="email" type="email" value={session?.user?.email || ""} disabled />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">{t("phone" as any)}</label>

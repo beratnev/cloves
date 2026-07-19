@@ -6,12 +6,14 @@ import { Star, Heart, Share2, Truck, Shield, RotateCcw, Check, Sparkles, Plus, M
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Price } from "@/components/ui/price"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { ProductCard } from "@/components/shop/product-card"
 import { motion } from "framer-motion"
 import { useCartStore } from "@/lib/store/cart"
 import { useTranslation } from "@/lib/i18n"
+import { translateDbString } from "@/lib/i18n/db-translations"
 import { useParams } from "next/navigation"
 import { useEffect } from "react"
 
@@ -19,7 +21,7 @@ import { useEffect } from "react"
 export default function ProductPage() {
   const params = useParams()
   const slug = params?.slug as string
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const [product, setProduct] = useState<any>(null)
   const [similarProducts, setSimilarProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -144,13 +146,13 @@ export default function ProductPage() {
   return (
     <div className="container py-8">
       <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-        <span>Home</span>
+        <span>{translateDbString("Home", language)}</span>
         <span>/</span>
-        <span>{product.department || "Department"}</span>
+        <span>{product.department ? translateDbString(product.department, language) : translateDbString("Department", language)}</span>
         <span>/</span>
-        <span>{product.category}</span>
+        <span>{translateDbString(product.category, language)}</span>
         <span>/</span>
-        <span className="text-foreground">{product.name}</span>
+        <span className="text-foreground">{translateDbString(product.name, language)}</span>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-12 mb-16">
@@ -213,22 +215,16 @@ export default function ProductPage() {
             <Badge variant="outline" className="mb-2">
               {product.brand}
             </Badge>
-            <h1 className="text-2xl md:text-3xl font-bold mb-2 tracking-tight">{product.name}</h1>
+            <h1 className="text-2xl md:text-3xl font-bold mb-2 tracking-tight">{translateDbString(product.name, language)}</h1>
 
             <div className="flex items-baseline gap-3">
               {product.discountPrice ? (
                 <>
-                  <span className="text-2xl font-bold">
-                    ${product.discountPrice.toFixed(2)}
-                  </span>
-                  <span className="text-lg text-muted-foreground line-through">
-                    ${product.price.toFixed(2)}
-                  </span>
+                  <Price amount={product.discountPrice} className="text-2xl font-bold" />
+                  <Price amount={product.price} className="text-lg text-muted-foreground line-through" />
                 </>
               ) : (
-                <span className="text-2xl font-bold">
-                  ${product.price.toFixed(2)}
-                </span>
+                <Price amount={product.price} className="text-2xl font-bold" />
               )}
             </div>
           </div>
@@ -342,13 +338,11 @@ export default function ProductPage() {
 
           <div>
             <h3 className="font-semibold mb-2">{t("description" as any)}</h3>
-            <p className="text-muted-foreground leading-relaxed">{product.description}</p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold mb-2">{t("materialCare" as any)}</h3>
-            <p className="text-sm text-muted-foreground mb-2"><strong>{t("material" as any)}:</strong> {product.material}</p>
-            <p className="text-sm text-muted-foreground"><strong>{t("care" as any)}:</strong> {product.careInstructions}</p>
+            <div className="text-muted-foreground leading-relaxed space-y-4">
+              {translateDbString(product.description, language).split('\n').filter((p: string) => p.trim() !== '').map((paragraph: string, index: number) => (
+                <p key={index} className="indent-4 text-justify">{paragraph}</p>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>
@@ -378,7 +372,7 @@ export default function ProductPage() {
                       {product.aiAdvice.keyBenefits.map((benefit: string, index: number) => (
                         <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
                           <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                          {benefit}
+                          {translateDbString(benefit, language)}
                         </li>
                       ))}
                     </ul>
@@ -394,7 +388,7 @@ export default function ProductPage() {
                       {product.aiAdvice.usageTips.map((tip: string, index: number) => (
                         <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
                           <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                          {tip}
+                          {translateDbString(tip, language)}
                         </li>
                       ))}
                     </ul>
@@ -427,19 +421,19 @@ export default function ProductPage() {
                   {product.brand && (
                     <div className="flex justify-between py-2 border-b">
                       <span className="text-muted-foreground">{t("brandLabel" as any) || "Brand"}</span>
-                      <span className="font-medium text-right">{product.brand}</span>
+                      <span className="font-medium text-right">{translateDbString(product.brand, language)}</span>
                     </div>
                   )}
                   {product.department && (
                     <div className="flex justify-between py-2 border-b">
                       <span className="text-muted-foreground">{t("departmentLabel" as any) || "Department"}</span>
-                      <span className="font-medium text-right">{product.department}</span>
+                      <span className="font-medium text-right">{translateDbString(product.department, language)}</span>
                     </div>
                   )}
                   {product.category && (
                     <div className="flex justify-between py-2 border-b">
                       <span className="text-muted-foreground">{t("categoryLabel" as any) || "Category"}</span>
-                      <span className="font-medium text-right">{product.category}</span>
+                      <span className="font-medium text-right">{translateDbString(product.category, language)}</span>
                     </div>
                   )}
                   {product.sku && (
@@ -475,15 +469,18 @@ export default function ProductPage() {
                   {product.howToUse && (
                     <div className="flex flex-col py-3 border-b last:border-0">
                       <span className="text-muted-foreground mb-1">{t("howToUseLabel" as any) || "How to Use"}</span>
-                      <span className="text-sm">{product.howToUse}</span>
+                      <span className="text-sm">{translateDbString(product.howToUse, language)}</span>
                     </div>
                   )}
-                  {product.attributes && Object.entries(product.attributes).map(([key, value]) => (
-                    <div key={key} className="flex justify-between py-2 border-b last:border-0">
-                      <span className="text-muted-foreground">{key}</span>
-                      <span className="font-medium text-right">{String(value)}</span>
-                    </div>
-                  ))}
+                  {product.attributes && Object.entries(product.attributes).map(([key, value]) => {
+                    if (!value) return null;
+                    return (
+                      <div key={key} className="flex flex-col sm:flex-row justify-between py-3 border-b last:border-0 gap-2">
+                        <span className="text-muted-foreground min-w-[150px]">{translateDbString(key, language)}</span>
+                        <span className="font-medium text-sm sm:text-base text-right">{translateDbString(String(value), language)}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>

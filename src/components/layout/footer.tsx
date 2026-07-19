@@ -38,7 +38,7 @@ export function Footer() {
               </Button>
             </div>
             <div className="mt-4">
-              <span className="inline-flex items-center rounded-md bg-primary/10 px-4 py-2 text-base font-semibold text-primary ring-1 ring-inset ring-primary/20">v1.0.1</span>
+              <span className="inline-flex items-center rounded-md bg-primary/10 px-4 py-2 text-base font-semibold text-primary ring-1 ring-inset ring-primary/20">v1.2.0</span>
             </div>
           </div>
 

@@ -388,9 +388,9 @@ export default function AdminProductsPage() {
   const handleToggleFeatured = async (product: Product) => {
     try {
       const res = await fetch(`/api/admin/products/${product.id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...product, featured: !product.featured })
+        body: JSON.stringify({ featured: !product.featured })
       })
       if (res.ok) fetchProducts()
     } catch (e) {}
@@ -399,9 +399,9 @@ export default function AdminProductsPage() {
   const handleArchive = async (product: Product) => {
     try {
       const res = await fetch(`/api/admin/products/${product.id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...product, status: product.status === 'archived' ? 'active' : 'archived' })
+        body: JSON.stringify({ status: product.status === 'archived' ? 'active' : 'archived' })
       })
       if (res.ok) fetchProducts()
     } catch (e) {}

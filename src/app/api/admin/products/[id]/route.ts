@@ -127,6 +127,43 @@ export async function PUT(
 }
 
 // DELETE product
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const authError = await requireAdmin()
+    if (authError) return authError
+
+    const { id } = await params;
+    const body = await request.json()
+    
+    // Validate we are only updating allowed fields like featured or status
+    const allowedFields = ['featured', 'status']
+    const dataToUpdate: any = {}
+    
+    for (const field of allowedFields) {
+      if (body[field] !== undefined) {
+        dataToUpdate[field] = body[field]
+      }
+    }
+
+    if (Object.keys(dataToUpdate).length === 0) {
+      return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 })
+    }
+
+    const product = await prisma.product.update({
+      where: { id },
+      data: dataToUpdate
+    })
+
+    return NextResponse.json({ success: true, product })
+  } catch (error) {
+    console.error('Error updating product via PATCH:', error)
+    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 })
+  }
+}
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

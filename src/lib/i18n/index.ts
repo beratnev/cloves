@@ -17,7 +17,7 @@ export const useLanguageStore = create<LanguageStore>()(
       setLanguage: (lang) => set({ language: lang }),
     }),
     {
-      name: "language-storage",
+      name: "language-storage-v2",
     }
   )
 );

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Price } from "@/components/ui/price"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
@@ -17,6 +18,7 @@ import { departmentFilters } from "@/lib/config/filters"
 interface AdminProduct {
   id: string
   name: string
+  slug?: string
   sku: string
   category: string
   brand: string
@@ -58,6 +60,7 @@ function ProductsPageContent() {
   const [priceRange, setPriceRange] = useState([0, 500])
   const [sortBy, setSortBy] = useState("featured")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [isLoading, setIsLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(false)
   const searchParams = useSearchParams()
 
@@ -87,6 +90,7 @@ function ProductsPageContent() {
   // Load products from API
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoading(true)
       try {
         const res = await fetch('/api/admin/products?limit=50')
         const data = await res.json()
@@ -95,6 +99,8 @@ function ProductsPageContent() {
         }
       } catch (e) {
         console.error(e)
+      } finally {
+        setIsLoading(false)
       }
     }
     fetchProducts()
@@ -106,9 +112,13 @@ function ProductsPageContent() {
       
       const categoryParam = params.get('category')
       if (categoryParam) {
-        // Capitalize category or match exactly
         const categoryMatch = categories.find(c => c.toLowerCase() === categoryParam.toLowerCase())
         if (categoryMatch) setSelectedCategory(categoryMatch)
+      }
+
+      const saleParam = params.get('sale')
+      if (saleParam === 'true') {
+        setSelectedCategory('SALE')
       }
     }
   }, [])
@@ -131,6 +141,11 @@ function ProductsPageContent() {
         const categoryMatch = categories.find(c => c.toLowerCase() === categoryParam.toLowerCase())
         if (categoryMatch) setSelectedCategory(categoryMatch)
       }
+
+      const saleParam = searchParams.get('sale')
+      if (saleParam === 'true') {
+        setSelectedCategory('SALE')
+      }
     }
   }, [searchParams])
 
@@ -145,7 +160,7 @@ function ProductsPageContent() {
     .map(p => ({
       id: p.id,
       name: p.name,
-      slug: p.name.toLowerCase().replace(/\s+/g, '-'),
+      slug: p.slug || p.name.toLowerCase().replace(/\s+/g, '-'),
       price: p.price,
       discountPrice: p.comparePrice || undefined,
       images: p.images.length > 0 ? p.images.map((img: any) => img.secureUrl) : ["/placeholder-product.jpg"],
@@ -164,13 +179,14 @@ function ProductsPageContent() {
     if (selectedCategory === "All") {
       matchesCategory = true;
     } else if (selectedCategory === "SALE") {
-      matchesCategory = !!product.discountPrice;
+      matchesCategory = !!product.discountPrice && product.discountPrice < product.price;
     } else if (selectedCategory === "NEW") {
       matchesCategory = true;
     } else {
       matchesCategory = product.department === selectedCategory || product.category === selectedCategory;
     }
-    const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1]
+    const effectivePrice = product.discountPrice || product.price
+    const matchesPrice = effectivePrice >= priceRange[0] && (priceRange[1] >= 500 ? true : effectivePrice <= priceRange[1])
     
     let matchesDynamic = true
     if (departmentName) {
@@ -259,8 +275,8 @@ function ProductsPageContent() {
             step={10}
           />
           <div className="flex justify-between text-sm text-muted-foreground">
-            <span>${priceRange[0]}</span>
-            <span>${priceRange[1]}</span>
+            <Price amount={priceRange[0]} />
+            <Price amount={priceRange[1]} />
           </div>
         </div>
       </div>
@@ -331,7 +347,7 @@ function ProductsPageContent() {
       </div>
 
       {/* Search and Filters Bar */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
+      <div className="flex flex-col md:flex-row md:justify-end gap-4 mb-8">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
@@ -375,18 +391,10 @@ function ProductsPageContent() {
 
         <div className="hidden md:flex gap-2">
           <Button
-            variant={viewMode === "grid" ? "default" : "outline"}
+            variant="default"
             size="icon"
-            onClick={() => setViewMode("grid")}
           >
             <Grid className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={viewMode === "list" ? "default" : "outline"}
-            size="icon"
-            onClick={() => setViewMode("list")}
-          >
-            <List className="h-4 w-4" />
           </Button>
         </div>
       </div>
@@ -404,7 +412,13 @@ function ProductsPageContent() {
 
         {/* Products Grid */}
         <div className="flex-1">
-          {sortedProducts.length === 0 ? (
+          {isLoading ? (
+            <div className={viewMode === "grid" ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" : "space-y-6"}>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="animate-pulse bg-muted rounded-lg h-[400px]" />
+              ))}
+            </div>
+          ) : sortedProducts.length === 0 ? (
             <Card className="border-0 shadow-luxury bg-card/50 backdrop-blur-sm">
               <CardContent className="p-12 text-center">
                 <p className="text-muted-foreground mb-4 text-lg">{t("noProductsFound" as any) || "No products found"}</p>

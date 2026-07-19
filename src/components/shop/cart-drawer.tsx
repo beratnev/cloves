@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Separator } from "@/components/ui/separator"
 import { useCartStore } from "@/lib/store/cart"
+import { useLanguageStore } from "@/lib/i18n"
+import { Price } from "@/components/ui/price"
 import { motion, AnimatePresence } from "framer-motion"
 
 export function CartDrawer() {
@@ -68,9 +70,7 @@ export function CartDrawer() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="font-medium line-clamp-1 mb-1">{item.name}</h4>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          ${item.price.toFixed(2)}
-                        </p>
+                        <Price amount={item.price} className="text-sm text-muted-foreground mb-2" />
                         <div className="flex items-center gap-2">
                           <Button
                             variant="outline"
@@ -110,20 +110,20 @@ export function CartDrawer() {
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <Price amount={subtotal} />
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Shipping</span>
-                <span>{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
+                {shipping === 0 ? <span>Free</span> : <Price amount={shipping} />}
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Tax</span>
-                <span>${tax.toFixed(2)}</span>
+                <Price amount={tax} />
               </div>
               <Separator />
               <div className="flex justify-between font-semibold">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <Price amount={total} />
               </div>
               <Button className="w-full" size="lg" onClick={() => setOpen(false)}>
                 Proceed to Checkout

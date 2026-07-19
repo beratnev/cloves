@@ -247,6 +247,12 @@
     @apply bg-muted-foreground/40 rounded-full hover:bg-muted-foreground/60 transition-colors;
   }
   
+  /* Custom scrollbar for featured list */
+  .custom-scrollbar {
+    scrollbar-color: hsl(var(--primary)) hsl(var(--muted)/0.2);
+    scrollbar-width: thin;
+  }
+  
   /* Button hover effects */
   .btn-luxury {
     @apply relative overflow-hidden transition-all duration-300;

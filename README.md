@@ -9,7 +9,7 @@ A modern, production-ready e-commerce platform specializing in skincare, body ca
 - **Database**: Neon PostgreSQL with Prisma ORM
 - **Authentication**: Auth.js (NextAuth v5) with Role-Based Access Control (Admin / User)
 - **Media Storage**: Cloudinary
-- **AI Integration**: Google Gemini API (gemini-3.5-flash)
+- **AI Integration**: Google Gemini API (gemini-1.5-flash)
 - **State Management**: Zustand
 - **Forms & Validation**: React Hook Form + Zod
 
@@ -70,15 +70,15 @@ GEMINI_API_KEY="your-gemini-api-key"
 CLOUDINARY_URL="cloudinary://API_KEY:API_SECRET@CLOUD_NAME"
 
 # Admin Setup
-ADMIN_EMAIL="cloves@admin.com"
+ADMIN_EMAIL="admin@example.com"
 ADMIN_PASSWORD="your-secure-password"
 ```
 
 ### 4. Initialize the Database
-Push the Prisma schema to your database and seed it with initial data:
+Push the Prisma schema to your database and run the setup script to seed initial data and the admin account:
 ```bash
 npx prisma db push
-npx prisma db seed
+npx tsx scripts/setup.ts
 ```
 
 ### 5. Start the Development Server
@@ -88,7 +88,7 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🔐 Admin Access
-This project uses environment variables to securely define the admin user. When you log in using the exact credentials specified in `ADMIN_EMAIL` and `ADMIN_PASSWORD` in your `.env` file, the system will automatically grant you the `ADMIN` role. 
+This project includes a secure setup script (`scripts/setup.ts`) to create the initial admin user. When you run `npx tsx scripts/setup.ts`, it will automatically create an admin account (by default `admin@example.com` or what is defined in the script) and hash the password using `bcrypt`. 
 
 *No other users who register normally can access the admin dashboard.*
 
