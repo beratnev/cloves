@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# AI Shop - AI-Powered E-Commerce Platform
+# Clove's - AI-Powered E-Commerce Platform
 
 A modern, production-ready e-commerce platform with integrated AI Shopping Assistant that helps users find products using natural language.
 
@@ -88,7 +87,16 @@ npx prisma db push
 npx prisma db seed
 ```
 
-5. **Run the development server**
+5. **Set up the Admin User**
+By default, the application does not hardcode any admin passwords. You must create your own admin account through environment variables:
+Open `.env` and add:
+```env
+ADMIN_EMAIL="your_admin_email@example.com"
+ADMIN_PASSWORD="your_secure_password"
+```
+Log in using these exact credentials. You will automatically be granted the `ADMIN` role. No other user can gain admin privileges.
+
+6. **Run the development server**
 ```bash
 npm run dev
 ```
@@ -196,6 +204,8 @@ TTL: Automatic
 | `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name | Yes |
 | `CLOUDINARY_API_KEY` | Cloudinary API key | Yes |
 | `CLOUDINARY_API_SECRET` | Cloudinary API secret | Yes |
+| `ADMIN_EMAIL` | The email address to access the Admin dashboard | Yes |
+| `ADMIN_PASSWORD` | The password to access the Admin dashboard | Yes |
 
 ## Scripts
 
@@ -215,7 +225,4 @@ MIT
 
 ## Support
 
-For support, email support@ai-shop.beratnev.com or open an issue on GitHub.
-=======
-# cloves
->>>>>>> 303353e3c135eaa18b1d53706ed86f80b9b7517d
+For support, email support@cloves.beratnev.com or open an issue on GitHub.

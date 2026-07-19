@@ -1,13 +1,29 @@
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { NextRequest, NextResponse } from "next/server"
 import { PrismaClient } from "@prisma/client"
+import { z } from "zod"
+
+const MessageSchema = z.object({
+  role: z.enum(["user", "model", "assistant", "system"]),
+  content: z.string().max(1000)
+})
+
+const RequestSchema = z.object({
+  messages: z.array(MessageSchema).max(20)
+})
 
 const prisma = new PrismaClient()
 
 export async function POST(request: NextRequest) {
   try {
-    const { messages } = await request.json()
-
+    const body = await request.json()
+    const validationResult = RequestSchema.safeParse(body)
+    
+    if (!validationResult.success) {
+      return NextResponse.json({ error: "Invalid request payload" }, { status: 400 })
+    }
+    
+    const { messages } = validationResult.data
     console.log("Received messages:", messages.length)
 
     const apiKey = process.env.GEMINI_API_KEY
@@ -77,9 +93,7 @@ export async function POST(request: NextRequest) {
     console.error("Gemini API error:", error)
     return NextResponse.json(
       { 
-        error: "Failed to generate response",
-        details: error instanceof Error ? error.message : "Unknown error",
-        stack: error instanceof Error ? error.stack : undefined
+        error: "Failed to generate response"
       },
       { status: 500 }
     )
