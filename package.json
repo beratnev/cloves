@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:push": "prisma db push",
-    "db:seed": "prisma db seed",
+    "db:seed": "node prisma/seed.js",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate && patch-package"
   },
