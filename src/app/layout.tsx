@@ -15,7 +15,7 @@ const libreBaskerville = Libre_Baskerville({
 });
 
 export const metadata: Metadata = {
-  title: "Clove's - Premium Beauty & Skincare",
+  title: "Clove's │ Skin & Body Care",
   description: "Discover premium skincare, body care, fragrances, and more at Clove's. Your destination for timeless beauty with AI-powered personalized advice.",
   keywords: "beauty, skincare, body care, cosmetics, fragrance, premium beauty, luxury skincare, AI beauty assistant",
   authors: [{ name: "Clove's" }],
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://ai-shop.beratnev.com',
-    title: "Clove's - Premium Beauty & Skincare",
+    title: "Clove's │ Skin & Body Care",
     description: 'Discover premium skincare, body care, fragrances, and more at Clove\'s. Your destination for timeless beauty.',
     siteName: "Clove's",
     images: [
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Clove's - Premium Beauty & Skincare",
+    title: "Clove's │ Skin & Body Care",
     description: 'Discover premium skincare, body care, fragrances, and more at Clove\'s.',
     images: ['/twitter-image.jpg'],
     creator: '@clovebeauty',
