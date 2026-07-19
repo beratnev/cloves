@@ -117,9 +117,10 @@ export function Header() {
             </Link>
           </div>
 
-          <div className="hidden md:flex flex-1 max-w-md mx-8 items-center relative">
+          <div className="hidden md:flex flex-1 max-w-2xl mx-8 items-center gap-8 relative">
 
-            <form onSubmit={handleSearch} className="relative w-full">
+            <div className="w-full max-w-md relative">
+              <form onSubmit={handleSearch} className="relative w-full">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
@@ -169,6 +170,23 @@ export function Header() {
                 )}
               </div>
             )}
+            </div>
+
+            <div className="flex items-center gap-2 text-sm font-semibold shrink-0">
+              <button 
+                onClick={() => setLanguage("EN")}
+                className={`transition-colors ${language === "EN" ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                EN
+              </button>
+              <span className="text-muted-foreground/30">|</span>
+              <button 
+                onClick={() => setLanguage("TR")}
+                className={`transition-colors ${language === "TR" ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                TR
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
@@ -222,21 +240,6 @@ export function Header() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>{t("signOut" as any)}</DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <div className="flex items-center justify-center gap-4 p-2 text-sm font-semibold">
-                    <button 
-                      onClick={() => setLanguage("EN")}
-                      className={`transition-colors ${language === "EN" ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
-                    >
-                      EN
-                    </button>
-                    <span className="text-muted-foreground/30">|</span>
-                    <button 
-                      onClick={() => setLanguage("TR")}
-                      className={`transition-colors ${language === "TR" ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
-                    >
-                      TR
-                    </button>
-                  </div>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
@@ -254,21 +257,6 @@ export function Header() {
                     <Link href="/login?tab=register">{t("signUp" as any, "Sign Up")}</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <div className="flex items-center justify-center gap-4 p-2 text-sm font-semibold">
-                    <button 
-                      onClick={() => setLanguage("EN")}
-                      className={`transition-colors ${language === "EN" ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
-                    >
-                      EN
-                    </button>
-                    <span className="text-muted-foreground/30">|</span>
-                    <button 
-                      onClick={() => setLanguage("TR")}
-                      className={`transition-colors ${language === "TR" ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
-                    >
-                      TR
-                    </button>
-                  </div>
                 </DropdownMenuContent>
               </DropdownMenu>
             )
