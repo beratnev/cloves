@@ -109,10 +109,10 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-[#f9fbfe]/95 backdrop-blur supports-[backdrop-filter]:bg-[#f9fbfe]/60">
       <div className="container flex flex-col">
         {/* Top Tier */}
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-24 items-center justify-between">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <Logo width={48} height={48} className="text-primary -mt-1" />
+              <Logo width={96} height={96} className="text-primary -mt-1" />
               <span className="hidden sm:inline-block text-2xl font-bold tracking-tight text-foreground -ml-2" style={{ fontFamily: 'var(--font-libre-baskerville)' }}>Clove's</span>
             </Link>
           </div>
