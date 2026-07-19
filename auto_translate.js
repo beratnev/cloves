@@ -103,7 +103,7 @@ const translations = {
   "Birthday": "Doğum Günü",
   "Anniversary": "Yıl Dönümü",
   "Holiday": "Tatil",
-  
+
   // Products Names
   "Ocean Breeze Shower Gel": "Okyanus Esintisi Duş Jeli",
   "All-in-1 Micellar Water Makeup Cleanser": "Hepsi Bir Arada Misel Su Makyaj Temizleyici",

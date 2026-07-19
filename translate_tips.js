@@ -99,9 +99,9 @@ const insertIndex = lines.findIndex(l => l.includes('TR: {')) + 1;
 
 const newLines = [];
 for (const [en, tr] of Object.entries(translations)) {
-  const enSafe = en.replace(/\\n/g, '\n').replace(/"/g, '\\"');
+  const enSafe = en.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
   if (!fileContent.includes(`"${enSafe}"`)) {
-    newLines.push(`    "${enSafe}": "${tr}",`);
+    newLines.push(`    ${JSON.stringify(en)}: ${JSON.stringify(tr)},`);
   }
 }
 

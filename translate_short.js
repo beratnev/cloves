@@ -98,7 +98,7 @@ for (const [en, tr] of Object.entries(translations)) {
   // Simple check to avoid duplicates, replacing \n back to literal so string match works
   const enSafe = en.replace(/\\n/g, '\n');
   if (!fileContent.includes(`"${enSafe}"`) && !fileContent.includes(`"${en}"`)) {
-    newLines.push(`    "${en}": "${tr}",`);
+    newLines.push(`    ${JSON.stringify(en)}: ${JSON.stringify(tr)},`);
   }
 }
 
