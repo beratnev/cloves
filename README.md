@@ -110,4 +110,4 @@ If you are deploying to a custom subdomain like `cloves.beratnev.com`, add a CNA
 MIT License
 
 ## 💬 Support
-For support or inquiries, please contact `support@cloves.beratnev.com` or open an issue on GitHub.
+For support or inquiries, please contact `beratnevcanoglu@outlook.com` or open an issue on GitHub.
