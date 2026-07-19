@@ -116,12 +116,13 @@ export function Header() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center mt-5">
               <Image 
-                src="/logo-cloves.png" 
+                src="/logo.png" 
                 alt="Clove's" 
                 width={168} 
                 height={48} 
                 priority 
-                className="h-12 w-auto object-contain dark:invert scale-[3] origin-left" 
+                className="h-12 w-auto object-contain dark:invert scale-[0.7] origin-left" 
+                style={{ width: 'auto' }}
               />
             </Link>
           </div>
