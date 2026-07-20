@@ -5,7 +5,7 @@ import { AdminLayout } from "@/components/admin/admin-layout"
 export default async function AdminRootLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
   
-  if (!session || !session.user || session.user.email !== "admin@cloves.com") {
+  if (!session || !session.user || (session.user as any).role !== "ADMIN") {
     redirect("/")
   }
 

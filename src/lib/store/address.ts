@@ -25,19 +25,7 @@ interface AddressState {
 export const useAddressStore = create<AddressState>()(
   persist(
     (set) => ({
-      addresses: [
-        {
-          id: 'mock-address-1',
-          name: 'Sarah Johnson',
-          addressLine1: '123 Fashion Avenue',
-          city: 'New York',
-          state: 'NY',
-          zipCode: '10001',
-          country: 'United States',
-          phone: '+1 (555) 123-4567',
-          isDefault: true,
-        }
-      ],
+      addresses: [],
       addAddress: (address) =>
         set((state) => {
           const newAddress = { ...address, id: Math.random().toString(36).substring(2, 9) }

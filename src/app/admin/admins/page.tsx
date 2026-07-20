@@ -9,16 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Search, Plus, MoreHorizontal, Shield, Mail, Calendar } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
-const mockAdmins = [
-  {
-    id: "1",
-    name: "Admin User",
-    email: "admin@cloves.com",
-    role: "Super Admin",
-    status: "active",
-    lastLogin: "2024-03-20 14:30"
-  }
-]
+const mockAdmins: any[] = []
 
 export default function AdminsPage() {
   const [searchQuery, setSearchQuery] = useState("")

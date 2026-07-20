@@ -2,7 +2,7 @@
 
 A modern, production-ready e-commerce platform specializing in skincare, body care, and fragrances. Clove's features an integrated AI Shopping Assistant that helps customers find products, build beauty routines, and get personalized recommendations using natural language.
 
-## 🚀 Tech Stack
+## Tech Stack
 
 - **Frontend**: Next.js 15 (App Router), TypeScript, Tailwind CSS, shadcn/ui, Framer Motion
 - **Backend**: Next.js Server Actions, API Routes
@@ -13,24 +13,24 @@ A modern, production-ready e-commerce platform specializing in skincare, body ca
 - **State Management**: Zustand
 - **Forms & Validation**: React Hook Form + Zod
 
-## ✨ Features
+## Features
 
-### 🛍️ Customer Experience
-- **🤖 AI Shopping Assistant**: Ask questions like *"I have dry skin, what moisturizer should I use?"* or *"Recommend a floral summer perfume"* and get tailored product suggestions.
-- **🛒 Modern Shopping Cart & Checkout Flow**
-- **❤️ Wishlist Management**
-- **⭐ Product Reviews & Ratings**
-- **🌙 Dark/Light Mode & Premium Glassmorphism UI**
-- **📱 Fully Responsive & Accessible Design**
+### Customer Experience
+- **AI Shopping Assistant**: Ask questions like *"I have dry skin, what moisturizer should I use?"* or *"Recommend a floral summer perfume"* and get tailored product suggestions.
+- **Modern Shopping Cart & Checkout Flow**
+- **Wishlist Management**
+- **Product Reviews & Ratings**
+- **Dark/Light Mode & Premium Glassmorphism UI**
+- **Fully Responsive & Accessible Design**
 
-### 🛡️ Admin Dashboard
-- **📈 Analytics Overview**
-- **📦 Product & Inventory Management** (Full CRUD)
-- **🖼️ Secure Image Uploads** (Direct to Cloudinary via Admin Panel)
-- **🏷️ Category & Brand Management**
-- **📊 Order & Customer Tracking**
+### Admin Dashboard
+- **Analytics Overview**
+- **Product & Inventory Management** (Full CRUD)
+- **Secure Image Uploads** (Direct to Cloudinary via Admin Panel)
+- **Category & Brand Management**
+- **Order & Customer Tracking**
 
-## 💻 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js 18+
@@ -68,17 +68,12 @@ GEMINI_API_KEY="your-gemini-api-key"
 
 # Media Storage
 CLOUDINARY_URL="cloudinary://API_KEY:API_SECRET@CLOUD_NAME"
-
-# Admin Setup
-ADMIN_EMAIL="admin@example.com"
-ADMIN_PASSWORD="your-secure-password"
 ```
 
 ### 4. Initialize the Database
-Push the Prisma schema to your database and run the setup script to seed initial data and the admin account:
+Push the Prisma schema to your database:
 ```bash
 npx prisma db push
-npx tsx scripts/setup.ts
 ```
 
 ### 5. Start the Development Server
@@ -87,12 +82,17 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 🔐 Admin Access
-This project includes a secure setup script (`scripts/setup.ts`) to create the initial admin user. When you run `npx tsx scripts/setup.ts`, it will automatically create an admin account (by default `admin@example.com` or what is defined in the script) and hash the password using `bcrypt`. 
+## Admin Access
+Admin privileges in this project are determined strictly by the `role` field in the database. 
 
-*No other users who register normally can access the admin dashboard.*
+To create an admin account:
+1. Register a normal user account on the frontend.
+2. Open your database (e.g., Neon Console, Prisma Studio, or use a script).
+3. Find your user record and change the `role` field to `"ADMIN"`.
 
-## 🚀 Deployment (Vercel)
+Once updated, you can log in and access the `/admin` dashboard. There are no hardcoded admin credentials in the source code.
+
+## Deployment (Vercel)
 
 1. Push your code to GitHub.
 2. Import the repository into Vercel.
@@ -106,8 +106,8 @@ If you are deploying to a custom subdomain like `cloves.beratnev.com`, add a CNA
 - **Value**: `cname.vercel-dns.com` (or your specific Vercel project URL)
 - **TTL**: Automatic
 
-## 📝 License
+## License
 MIT License
 
-## 💬 Support
+## Support
 For support or inquiries, please contact `beratnevcanoglu@outlook.com` or open an issue on GitHub.

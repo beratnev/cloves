@@ -1,4 +1,4 @@
-# AI Shop - Setup Instructions
+# Clove's - Setup Instructions
 
 ## Local Development
 
@@ -19,13 +19,25 @@ cp .env.example .env
 Edit `.env` with your values:
 
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/ai_shop"
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/cloves"
+
+# NextAuth
 NEXTAUTH_SECRET="your-secret-key-here"
 NEXTAUTH_URL="http://localhost:3000"
-OPENAI_API_KEY="your-openai-api-key"
-CLOUDINARY_CLOUD_NAME="your-cloud-name"
-CLOUDINARY_API_KEY="your-api-key"
-CLOUDINARY_API_SECRET="your-api-secret"
+
+# Gemini AI
+GEMINI_API_KEY="your-gemini-api-key-here"
+
+# Cloudinary
+CLOUDINARY_URL="cloudinary://your_api_key:your_api_secret@your_cloud_name"
+
+# App
+APP_URL="http://localhost:3000"
+
+# Admin Setup
+ADMIN_EMAIL="admin@example.com"
+ADMIN_PASSWORD="your_secure_password"
 ```
 
 ### 3. Set Up Database
@@ -36,6 +48,9 @@ npx prisma db push
 
 # Seed database with sample data
 npx prisma db seed
+
+# Create initial admin user
+npx tsx scripts/setup.ts
 ```
 
 ### 4. Run Development Server
@@ -53,7 +68,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 1. Install PostgreSQL on your machine
 2. Create a database:
    ```sql
-   CREATE DATABASE ai_shop;
+   CREATE DATABASE cloves;
    ```
 3. Update `DATABASE_URL` in `.env`
 
@@ -77,20 +92,17 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 1. Go to [cloudinary.com](https://cloudinary.com)
 2. Create a free account
-3. Go to Dashboard > Account Details
-4. Copy:
-   - Cloud Name
-   - API Key
-   - API Secret
-5. Update environment variables in `.env`
+3. Go to Dashboard
+4. Copy the **API Environment variable** (`CLOUDINARY_URL`)
+5. Update `CLOUDINARY_URL` in `.env`
 
-## OpenAI Setup
+## Google Gemini AI Setup
 
-1. Go to [platform.openai.com](https://platform.openai.com)
-2. Create an account
-3. Go to API Keys
-4. Create a new API key
-5. Update `OPENAI_API_KEY` in `.env`
+1. Go to [aistudio.google.com](https://aistudio.google.com/)
+2. Sign in with your Google account
+3. Click on "Get API Key"
+4. Create an API key in a new project
+5. Copy the key and update `GEMINI_API_KEY` in `.env`
 
 ## Available Scripts
 
@@ -127,7 +139,7 @@ npm run db:studio    # Open Prisma Studio
 ## Project Structure
 
 ```
-ai-shop/
+cloves/
 ├── src/
 │   ├── app/                    # Next.js App Router
 │   │   ├── (auth)/            # Auth routes

@@ -15,16 +15,7 @@ interface Suggestion {
   icon?: React.ReactNode
 }
 
-const mockSuggestions: Suggestion[] = [
-  { id: '1', text: 'Summer dresses under $100', type: 'query' },
-  { id: '2', text: 'Black leather handbags', type: 'product' },
-  { id: '3', text: 'Casual outfits for weekend', type: 'query' },
-  { id: '4', text: 'Women\'s shoes size 8', type: 'product' },
-  { id: '5', text: 'Accessories for formal events', type: 'category' },
-  { id: '6', text: 'Complete outfit for wedding', type: 'query' },
-  { id: '7', text: 'Cashmere sweaters', type: 'product' },
-  { id: '8', text: 'Designer bags on sale', type: 'query' },
-]
+const mockSuggestions: Suggestion[] = []
 
 export function AISearch() {
   const [query, setQuery] = useState("")
