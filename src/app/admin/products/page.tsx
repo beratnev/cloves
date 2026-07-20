@@ -248,7 +248,7 @@ export default function AdminProductsPage() {
       const aiProductPayload = {
         name: parsed.name || "AI Ürün",
         description: parsed.description || "",
-        sku: parsed.sku || `AI${Math.floor(1000 + Math.random() * 9000)}`,
+        sku: `${parsed.sku || 'AI'}-${Math.floor(10000 + Math.random() * 90000)}`,
         category: parsed.category || "Uncategorized",
         department: parsed.department || "FRAGRANCE",
         price: parsed.price || 0,

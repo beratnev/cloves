@@ -10,14 +10,13 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { User, ShoppingBag, Heart, Settings, MapPin, CreditCard, Bell, Shield, Clock, Eye, Trash2 } from "lucide-react"
+import { MapPin, Bell, Shield, Trash2 } from "lucide-react"
 import { motion } from "framer-motion"
 import { useAddressStore, Address } from "@/lib/store/address"
 import { useTranslation } from "@/lib/i18n"
 
 const orders: any[] = []
 const wishlist: any[] = []
-const recentlyViewed: any[] = []
 
 export default function ProfilePage() {
   const { t } = useTranslation()
