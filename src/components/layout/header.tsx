@@ -19,6 +19,7 @@ import { useTheme } from "@/components/theme-provider"
 import { useTranslation, useLanguageStore } from "@/lib/i18n"
 import { translateDbString } from "@/lib/i18n/db-translations"
 import { useSession, signOut } from "next-auth/react"
+import { DemoBanner } from "@/components/layout/demo-banner"
 
 export function Header() {
   const { theme, setTheme } = useTheme()
@@ -110,6 +111,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-[#f9fbfe]/95 backdrop-blur supports-[backdrop-filter]:bg-[#f9fbfe]/60">
+      <DemoBanner />
       <div className="container flex flex-col">
         {/* Top Tier */}
         <div className="flex h-16 items-center justify-between">

@@ -68,8 +68,22 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [showFilters, setShowFilters] = useState(false)
 
-  // Dynamic filter state
-  const [activeFilters, setActiveFilters] = useState<Record<string, string>>({})
+  // Dynamic filter state initialized directly from URL searchParams
+  const searchParamsString = searchParams ? searchParams.toString() : ""
+  const extractFiltersFromParams = (paramsString: string) => {
+    const extracted: Record<string, string> = {}
+    const parsed = new URLSearchParams(paramsString)
+    parsed.forEach((value, key) => {
+      if (key !== "sort" && key !== "search" && value) {
+        extracted[key] = value
+      }
+    })
+    return extracted
+  }
+
+  const [activeFilters, setActiveFilters] = useState<Record<string, string>>(() =>
+    extractFiltersFromParams(searchParamsString)
+  )
 
   const currentFiltersConfig = departmentFilters[departmentName] || []
 
@@ -77,7 +91,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
     const fetchProducts = async () => {
       setIsLoading(true)
       try {
-        const res = await fetch('/api/admin/products?limit=50')
+        const res = await fetch('/api/admin/products?limit=100')
         const data = await res.json()
         if (data.products) {
           setAdminProducts(data.products)
@@ -89,19 +103,12 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
       }
     }
     fetchProducts()
+  }, [slug])
 
-    // Extract filters from URL query params
-    const initialFilters: Record<string, string> = {}
-    if (searchParams) {
-      searchParams.forEach((value, key) => {
-        if (key !== "sort" && key !== "search") {
-          initialFilters[key] = value
-        }
-      })
-    }
-    setActiveFilters(initialFilters)
+  useEffect(() => {
+    setActiveFilters(extractFiltersFromParams(searchParamsString))
     setPriceRange([0, 500])
-  }, [slug, searchParams])
+  }, [slug, searchParamsString])
 
   // Convert admin products to display format
   const products = adminProducts
@@ -132,7 +139,9 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
         if (filterId === "brand") {
           if (product.brand !== selectedValue) matchesDynamic = false;
         } else if (filterId === "productType" || filterId === "category") {
-          if (product.category !== selectedValue) matchesDynamic = false;
+          if (product.category !== selectedValue && product.attributes?.productType !== selectedValue) {
+            matchesDynamic = false;
+          }
         } else {
           // Check dynamic attributes
           if (product.attributes[filterId] !== selectedValue) {

@@ -5,7 +5,7 @@ import HomePage from "./HomePage"
 // before sending any HTML to the browser. This eliminates loading spinners
 // on the first load and dramatically improves SEO and performance.
 
-export const revalidate = 60 // Revalidate every 60 seconds (ISR)
+export const dynamic = "force-dynamic"
 
 export default async function Page() {
   // Fetch initial data concurrently

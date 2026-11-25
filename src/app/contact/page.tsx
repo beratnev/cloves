@@ -7,10 +7,10 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 
 const contactInfo = [
-  { icon: Mail, title: "Email", detail: "support@cloves.demo", sub: "We reply within 24 hours" },
-  { icon: Phone, title: "Phone", detail: "+1 (800) 256-8374", sub: "Mon–Fri, 9am–6pm EST" },
-  { icon: MapPin, title: "Address", detail: "123 Blossom Ave, New York, NY 10001", sub: "Not open to the public" },
-  { icon: Clock, title: "Hours", detail: "Mon–Fri: 9am–6pm EST", sub: "Closed weekends & holidays" },
+  { icon: Mail, title: "Email", detail: "beratnevcanoglu@outlook.com", href: "mailto:beratnevcanoglu@outlook.com", sub: "" },
+  { icon: Phone, title: "Phone", detail: "-", sub: "" },
+  { icon: MapPin, title: "Address", detail: "-", sub: "" },
+  { icon: Clock, title: "Hours", detail: "-", sub: "" },
 ]
 
 export default function ContactPage() {
@@ -101,8 +101,14 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <div className="font-semibold text-sm">{item.title}</div>
-                      <div className="text-sm">{item.detail}</div>
-                      <div className="text-xs text-muted-foreground">{item.sub}</div>
+                      {item.href ? (
+                        <a href={item.href} className="text-sm text-primary hover:underline">
+                          {item.detail}
+                        </a>
+                      ) : (
+                        <div className="text-sm">{item.detail}</div>
+                      )}
+                      {item.sub && <div className="text-xs text-muted-foreground">{item.sub}</div>}
                     </div>
                   </CardContent>
                 </Card>

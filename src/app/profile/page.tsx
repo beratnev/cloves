@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useSession } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
@@ -21,10 +21,11 @@ const wishlist: any[] = []
 export default function ProfilePage() {
   const { t } = useTranslation()
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
   const { addresses, addAddress, updateAddress, removeAddress, setDefaultAddress } = useAddressStore()
   const [isMounted, setIsMounted] = useState(false)
   const [userName, setUserName] = useState("")
+  const [isDeleting, setIsDeleting] = useState(false)
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false)
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null)
   const [formData, setFormData] = useState<Partial<Address>>({
@@ -49,9 +50,24 @@ export default function ProfilePage() {
   }, [status, session, router])
 
   const handleSaveProfile = async () => {
-    // Ideally this would make an API call to update the user in the database
-    // For now we just show a success message
-    alert("Profile changes saved successfully." as any)
+    try {
+      const res = await fetch("/api/account", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: userName }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        alert(data.message || "Failed to update profile.")
+        return
+      }
+      const data = await res.json()
+      await update({ name: data.user.name })
+      alert("Profile changes saved successfully.")
+    } catch (err) {
+      console.error(err)
+      alert("Failed to update profile.")
+    }
   }
 
   const handleOpenAddressModal = (address?: Address) => {
@@ -84,10 +100,27 @@ export default function ProfilePage() {
     setIsAddressModalOpen(false)
   }
 
-  const handleDeleteAccount = () => {
-    if (window.confirm(t("deleteAccountConfirm" as any) || "Are you sure you want to permanently delete your account? This action cannot be undone.")) {
-      // For now, this is disabled since authentication is managed via NextAuth and DB
-      alert("Please contact support to delete your account.");
+  const handleDeleteAccount = async () => {
+    if (!window.confirm(t("deleteAccountConfirm" as any) || "Are you sure you want to permanently delete your account? This action cannot be undone.")) {
+      return
+    }
+    setIsDeleting(true)
+    try {
+      const res = await fetch("/api/account", { method: "DELETE" })
+      if (!res.ok && res.status !== 401) {
+        const data = await res.json().catch(() => ({}))
+        alert(data.message || "Failed to delete account.")
+        setIsDeleting(false)
+        return
+      }
+      localStorage.removeItem("demo-auth")
+      localStorage.removeItem("demo-email")
+      await signOut({ redirect: false })
+      window.location.href = "/"
+    } catch (err) {
+      console.error(err)
+      alert("Failed to delete account.")
+      setIsDeleting(false)
     }
   }
 
@@ -390,7 +423,9 @@ export default function ProfilePage() {
               <CardTitle>{t("dangerZone" as any)}</CardTitle>
             </CardHeader>
             <CardContent>
-              <Button variant="destructive" onClick={handleDeleteAccount}>{t("deleteAccount" as any)}</Button>
+              <Button variant="destructive" onClick={handleDeleteAccount} disabled={isDeleting}>
+                {isDeleting ? t("pleaseWait" as any) : t("deleteAccount" as any)}
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>

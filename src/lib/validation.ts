@@ -1,15 +1,58 @@
 import { z } from 'zod'
 
 // Email validation
-export const emailSchema = z.string().email('Invalid email address')
+export const STRICT_EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/
 
-// Password validation (at least 8 characters, 1 uppercase, 1 lowercase, 1 number)
+export const emailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .min(1, 'Email is required')
+  .max(254, 'Email is too long')
+  .email('Invalid email address')
+  .regex(STRICT_EMAIL_REGEX, 'Invalid email address')
+
+// Name validation (at least 2 letters, no purely numeric/symbol gibberish)
+export const authNameSchema = z
+  .string()
+  .trim()
+  .min(2, 'Full name must be at least 2 characters')
+  .max(80, 'Full name is too long')
+  .regex(/^[\p{L}\s'-]+$/u, 'Full name can only contain letters, spaces, hyphens, or apostrophes')
+
+// Password validation (at least 8 characters, max 72 for bcrypt, 1 uppercase, 1 lowercase, 1 number, 1 special char)
 export const passwordSchema = z
   .string()
   .min(8, 'Password must be at least 8 characters')
+  .max(72, 'Password must be at most 72 characters')
   .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
   .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
   .regex(/[0-9]/, 'Password must contain at least one number')
+  .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character')
+
+export const signUpSchema = z.object({
+  name: authNameSchema,
+  email: emailSchema,
+  password: passwordSchema,
+})
+
+export const signInSchema = z.object({
+  email: emailSchema,
+  password: z
+    .string()
+    .min(1, 'Password is required')
+    .max(72, 'Password is too long'),
+})
+
+export function evaluatePasswordRules(password: string) {
+  return {
+    minLength: password.length >= 8,
+    hasUppercase: /[A-Z]/.test(password),
+    hasLowercase: /[a-z]/.test(password),
+    hasNumber: /[0-9]/.test(password),
+    hasSpecial: /[^A-Za-z0-9]/.test(password),
+  }
+}
 
 // Phone number validation
 export const phoneSchema = z

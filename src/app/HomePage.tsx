@@ -39,10 +39,10 @@ export default function Home({ initialProducts, initialBanners }: HomePageProps)
   const { t, language } = useTranslation();
   const toUpper = (str: string) => str ? str.toLocaleUpperCase(language === "TR" ? "tr-TR" : "en-US") : "";
   const [mounted, setMounted] = useState(false);
-  const [adminProducts, setAdminProducts] = useState<AdminProduct[]>(initialProducts)
+  const adminProducts = initialProducts;
   const [isLoading, setIsLoading] = useState(false)
   const [currentHero, setCurrentHero] = useState(0);
-  const [dbBanners, setDbBanners] = useState<any[]>(initialBanners);
+  const dbBanners = initialBanners;
 
   const fallbackBanners = [
     {
@@ -59,7 +59,7 @@ export default function Home({ initialProducts, initialBanners }: HomePageProps)
       cta: t("explore" as any),
       color: "from-blue-500/20 to-cyan-500/20",
       image: "/banners/2.png",
-      link: "/products?search=curly",
+      link: "/categories/hair-care?hairType=Curly",
     },
     {
       title: t("quietLuxury" as any),
@@ -169,16 +169,15 @@ export default function Home({ initialProducts, initialBanners }: HomePageProps)
             <div className="w-full lg:w-[63%] xl:w-[57%] rounded-xl overflow-hidden aspect-[16/9] relative shadow-lg shrink-0 lg:ml-12">
               {displayBanners.map((banner, index) => (
                 <motion.div
-                  key={index}
+                  key={banner.id || index}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: currentHero === index ? 1 : 0 }}
                   transition={{ duration: 0.5 }}
-                  className={`absolute inset-0 flex items-center justify-center cursor-pointer ${currentHero === index ? 'z-10 pointer-events-auto' : 'z-0 pointer-events-none'}`}
-                  onClick={() => window.location.href = banner.link}
+                  className={`absolute inset-0 flex items-center justify-center ${currentHero === index ? 'z-10 pointer-events-auto' : 'z-0 pointer-events-none'}`}
                 >
-                  <div className="absolute inset-0 z-0">
+                  <Link href={banner.link || "/products"} className="absolute inset-0 z-0 block cursor-pointer">
                     <Image src={banner.image} fill sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover" alt={banner.title} priority={index === 0} />
-                  </div>
+                  </Link>
                 </motion.div>
               ))}
               
