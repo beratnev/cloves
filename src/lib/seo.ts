@@ -5,8 +5,8 @@ export function generateOrganizationSchema() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: "Clove's",
-    url: 'https://ai-shop.beratnev.com',
-    logo: 'https://ai-shop.beratnev.com/logo.png',
+    url: 'https://cloves.beratnev.com',
+    logo: 'https://cloves.beratnev.com/logo.png',
     description: 'Premium fashion and clothing store with AI-powered styling assistance',
     address: {
       '@type': 'PostalAddress',
@@ -51,7 +51,7 @@ export function generateProductSchema(product: {
       price: product.price,
       priceCurrency: product.currency,
       availability: product.availability,
-      url: `https://ai-shop.beratnev.com/products/${product.sku}`,
+      url: `https://cloves.beratnev.com/products/${product.sku}`,
       seller: {
         '@type': 'Organization',
         name: "Clove's",
@@ -84,11 +84,11 @@ export function generateWebSiteSchema() {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: "Clove's",
-    url: 'https://ai-shop.beratnev.com',
+    url: 'https://cloves.beratnev.com',
     description: 'Premium fashion and clothing store',
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://ai-shop.beratnev.com/search?q={search_term_string}',
+      target: 'https://cloves.beratnev.com/search?q={search_term_string}',
       'query-input': 'required name=search_term_string',
     },
   }

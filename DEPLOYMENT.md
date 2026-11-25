@@ -14,7 +14,7 @@ Set the following environment variables in your Vercel project settings:
 ```
 DATABASE_URL=postgresql://user:password@host:port/database
 NEXTAUTH_SECRET=your-secret-key
-NEXTAUTH_URL=https://ai-shop.beratnev.com
+NEXTAUTH_URL=https://cloves.beratnev.com
 OPENAI_API_KEY=your-openai-api-key
 CLOUDINARY_CLOUD_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
@@ -39,12 +39,12 @@ git push origin main
 4. Add environment variables
 5. Click "Deploy"
 
-### 3. Configure DNS for ai-shop.beratnev.com
+### 3. Configure DNS for cloves.beratnev.com
 
 1. Go to your domain registrar (Namecheap, GoDaddy, etc.)
 2. Add a CNAME record:
    - **Type**: CNAME
-   - **Host**: ai-shop
+   - **Host**: cloves
    - **Value**: your-vercel-project.vercel.app
    - **TTL**: Automatic
 
@@ -52,7 +52,7 @@ git push origin main
 
 1. Go to your Vercel project settings
 2. Click "Domains"
-3. Add `ai-shop.beratnev.com`
+3. Add `cloves.beratnev.com`
 4. Follow the DNS configuration instructions
 
 ### 5. Set Up Database

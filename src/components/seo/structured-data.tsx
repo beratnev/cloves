@@ -12,11 +12,11 @@ export function WebsiteStructuredData() {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'AI Shop',
-    url: 'https://ai-shop.beratnev.com',
+    url: 'https://cloves.beratnev.com',
     description: 'AI-powered e-commerce platform with intelligent product recommendations and natural language search',
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://ai-shop.beratnev.com/search?q={search_term_string}',
+      target: 'https://cloves.beratnev.com/search?q={search_term_string}',
       'query-input': 'required name=search_term_string',
     },
   }
@@ -48,7 +48,7 @@ export function ProductStructuredData(product: {
       price: product.discountPrice || product.price,
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
-      url: `https://ai-shop.beratnev.com/products/${product.sku}`,
+      url: `https://cloves.beratnev.com/products/${product.sku}`,
       priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
     },
   }
@@ -61,8 +61,8 @@ export function OrganizationStructuredData() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'AI Shop',
-    url: 'https://ai-shop.beratnev.com',
-    logo: 'https://ai-shop.beratnev.com/logo.png',
+    url: 'https://cloves.beratnev.com',
+    logo: 'https://cloves.beratnev.com/logo.png',
     description: 'AI-powered e-commerce platform with intelligent product recommendations and natural language search',
     contactPoint: {
       '@type': 'ContactPoint',

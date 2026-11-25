@@ -26,11 +26,11 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://ai-shop.beratnev.com'),
+  metadataBase: new URL('https://cloves.beratnev.com'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://ai-shop.beratnev.com',
+    url: 'https://cloves.beratnev.com',
     title: "Clove's │ Skin & Body Care",
     description: 'Discover premium skincare, body care, fragrances, and more at Clove\'s. Your destination for timeless beauty.',
     siteName: "Clove's",
